@@ -1,0 +1,15 @@
+td.my_td {
+    padding: 1px!important;
+    width: 20px;
+    font-size: 10px;
+    align-content: center;
+    align-items: center;
+}
+th.my_th {
+    width: 50px!important;
+    align-content: center!important;
+    align-items: center!important;
+}
+h4 {
+    font-size: 14px;
+}

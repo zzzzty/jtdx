@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ message }}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ majorform.management_form }}
+        <table>
+            <tr>
+                <th>专业名称</th><th>所属年级</th><th>错误信息</th>
+            </tr>
+        {% for field in majorform %}
+            <tr>
+            <td>{{ field.name }}</td>
+            <td>{{ field.grade}}</td>
+            <td><p class="text-danger">{{ field.non_field_errors }}</p></td>
+            <!-- <p class="text-danger">{{ field.errors.as_text }}</p> -->
+            <!-- <span class="pull-left text-danger">{{ field.non_field_errors}}</span> -->
+            </tr>
+        {% endfor %}
+        </table>
+        <input type="submit" value="goo">
+    </form>
+{% endblock %}

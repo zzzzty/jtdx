@@ -1,0 +1,72 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        打印平时成绩单
+    </title>
+    <link rel="stylesheet" href = "{% static 'printbase.css'%}">
+    <link rel="stylesheet" href = "{% static 'bootstrap-3.3.7/css/bootstrap.min.css'%}">
+    <script type="text/javascript" src="{% static 'jquery-1.12.4.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
+</head>
+<body>
+    <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+    <div class="table-responsive">
+    <h4>{{ task.classes }}平时成绩单</h4>
+    <h5>{{ task }}</h5>
+    <table class="table table-bordered table-srtiped">
+        <tr>
+            <th class="my_th">序号</th>
+            <th>学号</th>
+            <th class = "my_th">姓名</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        {% if user.is_authenticated %}
+            {% for s in students %}
+                <tr>
+                    <td class="my_td">{{ forloop.counter }}</td>
+                    <td class="my_td">{{ s.1 }}</td>
+                    <td class="my_td">{{ s.0 }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+            
+            {% for s in next_index %}
+                <tr>
+                    <td class="my_td">{{s}}</td>
+                    <td class="my_td"></td>
+                    <td class="my_td"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+        
+            {% endif %}
+
+    </table>
+    </div>
+    </div>
+    </div>
+</body>

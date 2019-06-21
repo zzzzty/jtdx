@@ -1,0 +1,48 @@
+* {
+    margin: 0%;
+    padding: 0;
+}
+div.nav {
+    background-color:#eee;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 5px;
+}
+div.nav a {
+    text-decoration: none;
+    color:black;
+}
+div.nav a.logo {
+    display: inline-block;
+    font-size: 120%;
+}
+body {
+
+    margin-top:100px!important;
+}
+
+
+
+
+    div.A4 {          
+        page-break-before: auto;          
+        page-break-after: always;  
+    }  
+
+
+table,th,td{
+    border: 1px solid black;
+
+}
+
+td.one{
+    padding:10px;
+    background-color:green;
+    text-align: center;
+    height:50px;
+    width:5%;
+}
+td.my_td {
+    padding: 2px!important;
+    width: 20px;
+}
+

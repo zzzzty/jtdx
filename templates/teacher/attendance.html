@@ -1,0 +1,57 @@
+{% extends 'teacherbase.html' %}
+{% load staticfiles %}
+
+{% block header_extends %} 
+
+{% endblock %}
+
+{% block content %}
+{{ students_pk }}
+
+{{ attendance_time }}
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+               <span> <h3>{{ task }} </h3></span> 
+    <form action="" method="post">
+            {% csrf_token %}
+            {% for field in formset %}
+            {{ field }}
+            <p class="text-danger">{{ field.errors.as_text }}</p>
+            {% endfor %}
+            <span class="pull-left text-danger">{{ formset.non_field_errors }}</span>
+            <select name="attendance_reason" id="">
+                <option value="迟到">迟到</option>
+            </select>
+            <input type="hidden" name="taskpk" value="{{ task.pk }}">
+            <button type="submit"> 提交 </button>
+    </form>
+    </div>
+    </div>
+
+    <div class="row">
+        
+            <div class="col-md-8 col-md-offset-2">
+                <table class="table">
+                {% for a in attendance_set %}
+                <tr>
+                    <td>{{ a.student }}</td>
+                    <td>{{ a.attendance_time }}</td>
+                    <td>{{ a.attendance_reason }}</td>
+                {% empty %}
+                </tr>
+                {% endfor %}
+            </table>
+            </div>
+        
+    </div>
+        <script type="text/javascript">
+            $('#id_attendance_time').datetimepicker({
+                format:'yyyy-mm-dd',
+                autoclose:true,
+                language:'zh-CN',
+                minView:'2',
+                todayBtn:'linked',
+            });
+        </script>
+{% endblock %}

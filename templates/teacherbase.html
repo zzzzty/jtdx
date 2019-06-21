@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_header %}
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                    <a class = "navbar-brand" href="{% url 'home' %}">
+                        首页
+                    </a>
+                    <button class="navbar-toggle collapsed" 
+                    data-target = "#navbar-collapse"
+                    data-toggle = "collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                    <ul class="nav navbar-nav">
+                            <li class="{% block nav_home_active %} {% endblock %}">
+                                <a href="{% url 'teacher_task' %}" class="">我的教学任务</a>
+                            </li>
+                            <li class="{% block nav_student_active %} {% endblock %}">
+                                <a href="" class="">文件下载</a>
+                            </li>
+                            {% if group_master %}
+                            <li class="{% block nav_select_teacher_active %} {% endblock %}">
+                                <a href="{% url 'select_teacher' %}" class="">教研组</a>
+                            </li>
+                            {% endif %}
+                            <!-- <li class="{% block nav_teacher_active %} {% endblock %}">
+                                <a href="" class="">教师管理</a>
+                            </li>
+                            <li class="{% block nav_more_active %} {% endblock %}">
+                                <a href="" class="">其他管理</a>
+                            </li> -->
+                    </ul>
+            </div>
+        </div>
+    </div>
+    <hr>
+
+{% endblock %}

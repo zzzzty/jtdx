@@ -1,0 +1,52 @@
+{% extends 'teacherbase.html' %}
+{% load staticfiles %}
+
+
+{% block content %}
+<!-- {{ task }}
+{{ students }}
+{{ scores }} -->
+<div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <h3 class="text-danger text-center">
+                每个学生的成绩只能更改一次
+                <br/>
+                提交后请联系教务
+            </h3>
+            <h4 class="bg-danger text-center" >教学任务：{{ task }}</h4>
+            <!-- {{ taskpk }} -->
+            <div class="table-responsive">
+                    <table class="table table-hover">
+                        <tr>
+                            <th></th>
+                            <th>教学任务</th>
+                            <th>学号</th>
+                            <th>姓名</th>
+                            <th>分数</th>
+                            <th>改为</th>
+                            <th>原因</th>
+                        </tr>
+            <form action="{% url 'change_score' task.pk %}" method="POST">
+                {% csrf_token %}
+                {{ formset.management_form }}
+                {% for register_form in formset %}
+                <tr>
+                    {% for field in register_form %}
+                        <!-- <label for="{{ field.id_for_label }}">{{ field.label }}</label> -->
+                        <td>
+                        {{ field }}
+                        <p class="text-danger">{{ field.errors.as_text }}</p>
+                        </td>
+                    {% endfor %}
+                        <span class="pull-left text-danger">{{ register_form.non_field_errors }}</span>
+                </tr>
+                {% endfor %}
+                </table>
+                </div>
+                <input type="submit" value="gooo" class="pull-right">
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

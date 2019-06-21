@@ -1,0 +1,50 @@
+{% extends 'teacherbase.html' %}
+{% load staticfiles %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+    <a href="{% url 'teacher_task' %}?semester_from_page = semester">选择学年学期semester</a>
+        <table class="table table-striped">
+        <tr>
+            <th>序号</th>
+            <th>学年学期</th>
+            <th>教师姓名</th>
+            <th>课程名称</th>
+            <th>班级</th>
+            <th>任务</th>
+            <th></th>
+        </tr>
+        {% for teachingtask in teachingtasks%}
+            <form action="{% url 'teacher_score' %}" method="get">
+            {% csrf_token %}
+            <tr>
+                <td><h5>{{forloop.counter}} </h5></td>
+                <td><h5>{{teachingtask.semester}}</h5></td>
+                <td><h5>{{teachingtask.teacher}}</h5></td>
+                <td><h5>{{teachingtask.course}}</h5></td>
+                <td><h5>{{teachingtask.classes}}</h5></td>
+                {% if teachingtask.is_input is False %}
+                <input type="hidden" name="taskpk" value="{{ teachingtask.pk }}">
+                <td>
+                    <a href="{% url 'print_name' teachingtask.pk %}" class="btn btn-info">打印平时成绩</a>
+                    <input type="submit" value="录入成绩" class="btn btn-danger">
+                </td>
+                <td><a href="{% url 'attendance' teachingtask.pk %}" class="btn btn-info">考勤管理</a></td>
+                {% else %}
+                <td>
+                    <a href="{% url 'print_score' teachingtask.pk %}" class="btn btn-success">打印期末成绩</a>
+                    <a href="{% url 'change_score' teachingtask.pk%}" class="btn btn-warning">更改成绩</a>
+                </td>
+                <td></td>
+                {% endif %}
+            </tr>
+        </form>
+        {% empty %}
+        <h1>没有信息</h1>
+        {% endfor %}
+    </table>
+    </div>
+</div>
+{% endblock %}

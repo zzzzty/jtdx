@@ -1,0 +1,17 @@
+{% extends 'base.html'%}
+
+{% block content %}
+
+{% if new_major.errors %}
+<p class="">出错：{{new_major.errors}}</p>
+
+{% else %}
+    <form action="" class="" method="POST">
+        {% csrf_token %}
+        <table class="">
+            {{ new_major.as_table }}
+        </table>
+        <input type="submit" value="提交">
+    </form>
+{% endif %}
+{% endblock %}
