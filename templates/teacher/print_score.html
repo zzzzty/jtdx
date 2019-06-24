@@ -6,16 +6,25 @@
 
 
 {{ task }}
-    <table>
-        <th colspan="6"><h3>fffffff</h3></th>
+    <div class="table">
+            <div class="col-md-10 col-md-offset-3">
+
+    <table class="mytable">
+        <th colspan="6"><h3>{{ task }}</h3></th>
         {% for s in scores %}
-            <tr>
+            <tr class="mytd">
                 <!-- <td> {{forloop.counter}}</td> -->
             {% for i in s %}
-                <td>{{i.student.student_num}}</td>
-                <td>{{i.student.nick_name}}</td>
-                <td>{{i.score}}</td>
+                {% if forloop.counter == 1%}
+                <td class="mytd">{{i.student.student_num}}</td>
+                <td class="mytd">{{i.student.nick_name}}</td>
+                <td class="mytd">{{i.score}}</td>
                 <td></td>
+                {% else %}
+                <td class="mytd">{{i.student.student_num}}</td>
+                <td class="mytd">{{i.student.nick_name}}</td>
+                <td class="mytd">{{i.score}}</td>
+                {% endif %}
             {% endfor %}
             </tr>
         {% endfor %}
@@ -29,6 +38,8 @@
                 <td> </td>
             </tr>
     </table>
+</div>
+</div>
 
 
 
