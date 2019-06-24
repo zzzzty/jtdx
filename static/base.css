@@ -31,8 +31,8 @@ body {
 
 table.mytable td.mytd{
     border: 1px solid black;
-    text-align: center
-
+    text-align: center;
+    height: 20px;
 }
 
 td.one{
@@ -45,5 +45,10 @@ td.one{
 td.my_td {
     padding: 2px!important;
     width: 20px;
+}
+
+td.tdspace{
+    width: 5%;
+    height:10px!important;
 }
 

@@ -7,39 +7,46 @@
 
 {{ task }}
     <div class="table">
-            <div class="col-md-10 col-md-offset-3">
-
-    <table class="mytable">
-        <th colspan="6"><h3>{{ task }}</h3></th>
-        {% for s in scores %}
-            <tr class="mytd">
-                <!-- <td> {{forloop.counter}}</td> -->
-            {% for i in s %}
-                {% if forloop.counter == 1%}
-                <td class="mytd">{{i.student.student_num}}</td>
-                <td class="mytd">{{i.student.nick_name}}</td>
-                <td class="mytd">{{i.score}}</td>
-                <td></td>
-                {% else %}
-                <td class="mytd">{{i.student.student_num}}</td>
-                <td class="mytd">{{i.student.nick_name}}</td>
-                <td class="mytd">{{i.score}}</td>
-                {% endif %}
-            {% endfor %}
-            </tr>
-        {% endfor %}
-            <tr>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td rowspan="31"> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-            </tr>
-    </table>
-</div>
-</div>
+            <div class="col-md-10 col-md-offset-2">
+                <table class="mytable">
+                    <tr><th colspan="6"><h3>{{ task }}</h3></th></tr>
+                    <tr >
+                        <td class = "mytd">学号</td>
+                        <td class = "mytd">姓名</td>
+                        <td class = "mytd">分数</td>
+                        <td rowspan="31" class="mytd"> </td>
+                        <td class = "mytd">学号</td>
+                        <td class = "mytd">姓名</td>
+                        <td class = "mytd">分数</td>
+                    </tr>
+                    {% for s in scores %}
+                        <tr class="mytd">
+                            <!-- <td> {{forloop.counter}}</td> -->
+                        {% for i in s %}
+                            {% if forloop.counter == 1%}
+                            <td class="mytd">{{i.student.student_num}}</td>
+                            <td class="mytd">{{i.student.nick_name}}</td>
+                            <td class="mytd">{{i.score}}</td>
+                            {% else %}
+                            <td class="mytd">{{i.student.student_num}}</td>
+                            <td class="mytd">{{i.student.nick_name}}</td>
+                            <td class="mytd">{{i.score}}</td>
+                            {% endif %}
+                        {% endfor %}
+                        </tr>
+                    {% endfor %}
+                        <tr>
+                            <td> </td>
+                            <td> </td>
+                            <td> </td>
+                            
+                            <td> </td>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+                </table>
+            </div>
+    </div>
 
 
 

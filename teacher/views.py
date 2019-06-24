@@ -408,11 +408,13 @@ def print_score(request,taskpk):
     task = TeachingTask.objects.get(pk = taskpk)
 
     scores = Score.objects.filter(task = task,root__isnull=True)
+    #有多少条数据
     scores_num = scores.count()
-
+    #构建数据
+    #假设成绩单可以显示50条数据
+    #计为25行数据 data 中存储25行数据
     data = []
     step = 0
-    
     for i in range(scores_num):
         if step == 0:
             adata = []
@@ -425,6 +427,16 @@ def print_score(request,taskpk):
             adata = []
             step = 0
             continue
+
+    if len(data[-1]) == 1 :
+        data[-1].append("")
+    
+    if len(data)< 25:
+        for i in range(len(data),25):
+            data.append(["",""])
+
+
+
 
     context = {}
     context['task'] = task
