@@ -3,7 +3,6 @@ from teacher.models import Teacher
 from teachingtask.models import TeachingTask
 
 class TaskForm(forms.Form):
-
     task = forms.CharField(widget=forms.HiddenInput(),label="")
     course = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True}))
     semester = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True}))
@@ -16,9 +15,6 @@ class TaskForm(forms.Form):
     def __init__(self,development = None ,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.fields['teacher'].queryset = Teacher.objects.filter(belong_to = development )
-
-
-
 
 
 

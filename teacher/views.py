@@ -415,6 +415,7 @@ def print_score(request,taskpk):
     #计为25行数据 data 中存储25行数据
     data = []
     step = 0
+    #有bug 单数的信息不会显示
     for i in range(scores_num):
         if step == 0:
             adata = []
@@ -427,20 +428,23 @@ def print_score(request,taskpk):
             adata = []
             step = 0
             continue
+    #解决单数不显示的问题
+    if scores_num%2 == 1:
+        data.append(adata)
 
-    if len(data[-1]) == 1 :
-        data[-1].append("")
+    if len(data)>0:
+        if len(data[-1]) == 1 :
+            data[-1].append("")
     
     if len(data)< 25:
         for i in range(len(data),25):
             data.append(["",""])
 
 
-
-
     context = {}
     context['task'] = task
     context['scores'] = data
+    context['scores_num'] = scores_num
     return render(request,'teacher/print_score.html',context)
 
 

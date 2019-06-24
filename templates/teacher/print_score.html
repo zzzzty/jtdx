@@ -4,20 +4,22 @@
 
 {% block content %}
 
-
+{{ scores_num }}
 {{ task }}
     <div class="table">
             <div class="col-md-10 col-md-offset-2">
                 <table class="mytable">
-                    <tr><th colspan="6"><h3>{{ task }}</h3></th></tr>
+                    <tr><th colspan="6" width = "100%"><h3>{{ task.semester }}</h3></th></tr>
                     <tr >
                         <td class = "mytd">学号</td>
                         <td class = "mytd">姓名</td>
                         <td class = "mytd">分数</td>
+                        <td class = "mytd">备注</td>
                         <td rowspan="31" class="mytd"> </td>
                         <td class = "mytd">学号</td>
                         <td class = "mytd">姓名</td>
                         <td class = "mytd">分数</td>
+                        <td class = "mytd">备注</td>
                     </tr>
                     {% for s in scores %}
                         <tr class="mytd">
@@ -27,10 +29,12 @@
                             <td class="mytd">{{i.student.student_num}}</td>
                             <td class="mytd">{{i.student.nick_name}}</td>
                             <td class="mytd">{{i.score}}</td>
+                            <td class="mytd"></td>
                             {% else %}
                             <td class="mytd">{{i.student.student_num}}</td>
                             <td class="mytd">{{i.student.nick_name}}</td>
                             <td class="mytd">{{i.score}}</td>
+                            <td class="mytd"></td>
                             {% endif %}
                         {% endfor %}
                         </tr>
@@ -39,11 +43,11 @@
                             <td> </td>
                             <td> </td>
                             <td> </td>
-                            
                             <td> </td>
                             <td> </td>
                             <td> </td>
                         </tr>
+                    
                 </table>
             </div>
     </div>

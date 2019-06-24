@@ -15,4 +15,4 @@ class Teacher(models.Model):
     class Meta:
         verbose_name = '教师信息'
         verbose_name_plural = '教师信息'
-        ordering = ('teacher__username',)
+        ordering = ('belong_to','teacher__username',)
