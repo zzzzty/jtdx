@@ -185,7 +185,7 @@ for i in range(1,nrows):
         newscore.save()
         score = newscore
         #print("savesocre",str(i))
-
+'''
     if len(str(bukaoscore)) > 0 and score.score < 60:
         score = Score.objects.filter( \
         task = teachingtask,
@@ -208,6 +208,7 @@ for i in range(1,nrows):
             bukaoscore = newscore
             print("添加补考",str(i))
 #    print(student,student_num,grade,classes,major)
+'''
 
     
 
