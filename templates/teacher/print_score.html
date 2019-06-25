@@ -7,20 +7,31 @@
 {{ scores_num }}
 {{ task }}
     <div class="table">
-            <div class="col-md-10 col-md-offset-2">
-                <table class="mytable">
+            <div class="col-md-10 col-md-offset-1">
+                <table class="mytable" style ="width:95%;margin:0 auto;">
+                    <thead>
                     <tr><th colspan="6" width = "100%"><h3>{{ task.semester }}</h3></th></tr>
+                    
                     <tr >
-                        <td class = "mytd">学号</td>
-                        <td class = "mytd">姓名</td>
-                        <td class = "mytd">分数</td>
-                        <td class = "mytd">备注</td>
-                        <td rowspan="31" class="mytd"> </td>
-                        <td class = "mytd">学号</td>
-                        <td class = "mytd">姓名</td>
-                        <td class = "mytd">分数</td>
-                        <td class = "mytd">备注</td>
+                        <td class = "mytd" rowspan="2" width="8%" height="17" algin="center">学号</td>
+                        <td class = "mytd" rowspan="2" width="7%" height="17" algin="center">姓名</td>
+                        <td class = "mytd" colspan="3" width="6%" height="17" algin="center">成绩</td>
+                        <td class = "mytd" rowspan="2" width="6%" height="17" algin="center">备注</td>
+                        <td class = "mytd" rowspan="2" width="8%" height="17" algin="center">学号</td>
+                        <td class = "mytd" rowspan="2" width="7%" height="17" algin="center">姓名</td>
+                        <td class = "mytd" colspan="3" width="6%" height="17" algin="center">成绩</td>
+                        <td class = "mytd" rowspan="2" width="6%" height="17" algin="center">备注</td>
                     </tr>
+                    <tr>
+                        <td width="6%" height="17" align="center">期末</td>
+                        <td width="6%" height="17" align="center">补考</td>
+                        <td width="6%" height="17" align="center">重修</td>
+                        <td width="6%" height="17" align="center">期末</td>
+                        <td width="6%" height="17" align="center">补考</td>
+                        <td width="6%" height="17" align="center">重修</td>
+                    </tr>
+                    </thead>
+                    <tbody>
                     {% for s in scores %}
                         <tr class="mytd">
                             <!-- <td> {{forloop.counter}}</td> -->
@@ -30,24 +41,56 @@
                             <td class="mytd">{{i.student.nick_name}}</td>
                             <td class="mytd">{{i.score}}</td>
                             <td class="mytd"></td>
+                            <td class="mytd"></td>
+                            <td class="mytd"></td>
                             {% else %}
                             <td class="mytd">{{i.student.student_num}}</td>
                             <td class="mytd">{{i.student.nick_name}}</td>
                             <td class="mytd">{{i.score}}</td>
                             <td class="mytd"></td>
+                            <td class="mytd"></td>
+                            <td class="mytd"></td>
                             {% endif %}
                         {% endfor %}
                         </tr>
                     {% endfor %}
+                    </tbody>
+                    <tfoot>
                         <tr>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
+                            <td class= "mytd" rowspan="4" width="8%" height="17">人数统计</td>
+                            <td class = "mytd" height="17">
+                                <font style="font-size: 12px"> 班级总人数</font>
+                               
+                            </td>
+                            <td class = "mytd" height="17">未参加人数</td>
+                            <td class = "mytd" height="17">作弊人数</td>
+                            <td class = "mytd" height="17">实考人数</td>
+                            <td class = "mytd" height="17">实考人数</td>
+                            <td class = "mytd" rowspan="4" colspan="6" width="8%"></td>
                         </tr>
-                    
+                        <tr>
+                                <td class = "mytd" height="17">班级总人数</td>
+                                <td class = "mytd" height="17">未参加人数</td>
+                                <td class = "mytd" height="17">作弊人数</td>
+                                <td class = "mytd" height="17">实考人数</td>
+                                <td class = "mytd" height="17">实考人数</td>
+                        </tr>
+                        <tr>
+                                <td class = "mytd" height="17">班级总人数</td>
+                                <td class = "mytd" height="17">未参加人数</td>
+                                <td class = "mytd" height="17">作弊人数</td>
+                                <td class = "mytd" height="17">实考人数</td>
+                                <td class = "mytd" height="17">实考人数</td>
+                        </tr>
+                        <tr>
+                                <td class = "mytd" height="17">班级总人数</td>
+                                <td class = "mytd" height="17">未参加人数</td>
+                                <td class = "mytd" height="17">作弊人数</td>
+                                <td class = "mytd" height="17">实考人数</td>
+                                <td class = "mytd" height="17">实考人数</td>
+                        </tr>
+                    </tfoot>
+                        
                 </table>
             </div>
     </div>

@@ -17,17 +17,13 @@ div.nav a.logo {
 }
 body {
 
-    margin-top:100px!important;
+    margin-top:50px!important;
 }
-
-
-
 
     div.A4 {          
         page-break-before: auto;          
         page-break-after: always;  
     }  
-
 
 table.mytable td.mytd{
     border: 1px solid black;

@@ -403,7 +403,7 @@ def select_teacher(request):
         return render(request,'teacher/select_teacher.html',context)
 
 
-
+@login_required(login_url="/teacher/")
 def print_score(request,taskpk):
     task = TeachingTask.objects.get(pk = taskpk)
 
