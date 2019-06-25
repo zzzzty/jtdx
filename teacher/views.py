@@ -436,10 +436,9 @@ def print_score(request,taskpk):
         if len(data[-1]) == 1 :
             data[-1].append("")
     
-    if len(data)< 25:
-        for i in range(len(data),25):
+    if len(data)< 30:
+        for i in range(len(data),30):
             data.append(["",""])
-
 
     context = {}
     context['task'] = task

@@ -7,7 +7,7 @@ from teacher.models import Teacher
 #使用content_type 重写应该
 
 class Score(models.Model):
-    task =  models.ForeignKey(TeachingTask,on_delete=models.DO_NOTHING)
+    task =  models.ForeignKey(TeachingTask,on_delete=models.DO_NOTHING,related_name="task")
     student = models.ForeignKey(Student,on_delete=models.DO_NOTHING)
     score = models.IntegerField(default=0)
     create_time = models.DateTimeField(auto_now_add=True)
