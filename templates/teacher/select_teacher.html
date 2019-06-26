@@ -3,19 +3,11 @@
 
 
 {% block content %}
-
+{{baseform}}
 {{name}}
 {{development}}
 <form action="" method="post">
     {% csrf_token %}
-
-
-
-
-
-
-
-
 <table>
 {{ iscore.management_form }}
 {% for register_form in iscore %}
@@ -33,11 +25,7 @@
 </form>
 
 
-{% for c in tasks %}
+<script>
 
-    {{c.teacher}}&nbsp;
-    {{c}}
-
-    <br/>
-{% endfor %}
+</script>
 {% endblock %}

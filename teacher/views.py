@@ -343,7 +343,7 @@ def teacher_attendance(request,taskpk):
 
 #from administrative.forms import SelectTeacherForm
 from course.models import Course
-from teachingtask.forms import TaskForm
+from teachingtask.forms import TaskForm,TasksForm
 
 @login_required(login_url="/teacher/")
 
@@ -355,6 +355,7 @@ def select_teacher(request):
     group_master = teacher.is_group_master
     #学年学期
     semester = Semester.objects.get(is_execute = True)
+
     newformset = formset_factory(TaskForm,extra=0)
     
     if request.method == "POST":
@@ -382,8 +383,12 @@ def select_teacher(request):
         courses = Course.objects.filter(belong_to = teacher.belong_to)
         task = TeachingTask.objects.filter(semester = semester).order_by('course')
         #反向查询加快速度？？？？？？？？？？？？？？？
-        
         #ttt = TeachingTask.objects.filter()
+        development_teachers = Teacher.objects. \
+            filter(belong_to = teacher.belong_to).values_list('pk','teacher__username')
+
+        print("heheh",(development_teachers))
+
         data = []
         for t in task:
             if t.course in courses:
@@ -393,13 +398,15 @@ def select_teacher(request):
                         "course":t.course,
                         "semester":t.semester,
                         "before_teacher":t.teacher,
-                        "classes":t.classes
+                        "classes":t.classes,
                     }
                 )
         context = {}
         # context['tasks'] = tasks
         context['group_master'] = group_master
+        #newformset = newformset(form_kwargs={'belong':teacher.belong_to})
         context['iscore'] = newformset(initial = data)
+        context['baseform'] = TaskForm()
         return render(request,'teacher/select_teacher.html',context)
 
 

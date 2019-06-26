@@ -4,8 +4,8 @@ from administrative.models import TeacherDevelopment
 # Create your models here.
 
 class DevelopmentManager(models.Manager):
-    def get_queryset(self):
-        return super(DevelopmentManager,self).get_queryset().filter(is_group_master=True)
+    def get_queryset(self,belong=None):
+        return super(DevelopmentManager,self).get_queryset().filter(belong_to=belong)
 
 class Teacher(models.Model):
     teacher = models.OneToOneField(User,on_delete=models.CASCADE,related_name = "teachers")
@@ -23,3 +23,4 @@ class Teacher(models.Model):
 
     objects = models.Manager()
     devel= DevelopmentManager()
+    #使用方法t.devel.get_queryset(belong=a)
