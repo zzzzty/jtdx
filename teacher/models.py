@@ -3,6 +3,10 @@ from django.contrib.auth.models import User
 from administrative.models import TeacherDevelopment
 # Create your models here.
 
+class DevelopmentManager(models.Manager):
+    def get_queryset(self):
+        return super(DevelopmentManager,self).get_queryset().filter(is_group_master=True)
+
 class Teacher(models.Model):
     teacher = models.OneToOneField(User,on_delete=models.CASCADE,related_name = "teachers")
     is_group_master = models.BooleanField(default=False)
@@ -16,3 +20,6 @@ class Teacher(models.Model):
         verbose_name = '教师信息'
         verbose_name_plural = '教师信息'
         ordering = ('belong_to','teacher__username',)
+
+    objects = models.Manager()
+    devel= DevelopmentManager()
