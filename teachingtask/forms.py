@@ -9,17 +9,24 @@ class TaskForm(forms.Form):
     semester = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True}))
     classes = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True}))
     before_teacher = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True}))
-    teacher = forms.ChoiceField(widget=forms.Select(attrs={'class':'form-control',}))
-    def __init__(self,*args,**kwargs):
-        super(TaskForm,self).__init__(*args,**kwargs)
-    #teacher = forms.ModelChoiceField(queryset=Teacher.objects.filter(belong_to=belong), \
-    #    widget=forms.Select(attrs={'class':'form-control',}))
-    
-class TasksForm(TaskForm):
-    def __init__(self,*args,belong,**kwargs):
-        self.belong = belong
-        super(TasksForm,self).__init__(*args,**kwargs)
-        self.fields['teacher'].queryset = Teacher.objects.filter(belong_to = self.belong )
+    #teacher = forms.ChoiceField(widget=forms.Select(attrs={'class':'form-control',}))
+    teacher = forms.ModelChoiceField(queryset=Teacher.objects.filter(), \
+        widget=forms.Select(attrs={'class':'form-control',}))
+
+#a new test use modelform
+class Select_Teacher(forms.ModelForm):
+    class Meta:
+        model = Teacher
+        fields = ['teacher']
+
+class TaskmodelForm(forms.ModelForm):
+    teacher = forms.ModelChoiceField(queryset=Teacher.devel.get_queryset(), \
+        widget=forms.Select(attrs={'class':'form-control',}))
+    class Meta:
+        model = TeachingTask
+        fields = '__all__'
+
+
     '''
     teacher = forms.ModelChoiceField(queryset=None, \
         widget=forms.Select(attrs={'class':'form-control',}))

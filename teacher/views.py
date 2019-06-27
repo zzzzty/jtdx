@@ -48,12 +48,12 @@ def teacher_home(request):
                                                     teachers.is_teacher
                 #teacherloginform = TeacherLoginForm()
                 name = request.user.username
-                print("___________",name)
+                #print("___________",name)
                 user = User.objects.get(username = name)#如果是个学生如何
                 teacher = Teacher.objects.get(teacher = user)
                 teachingtasks = TeachingTask.objects.filter(teacher=teacher)
                 context = {}
-
+                context['group_master'] = teacher.is_group_master
                 context['name'] = name
                 context['teachingtasks'] = teachingtasks
                 return render(request,'teacher/teacher_task.html',context)
@@ -102,6 +102,7 @@ def teacher_task(request):
     #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     teachingtasks = TeachingTask.objects.filter(teacher=teacher)
     context = {}
+    context['group_master'] = teacher.is_group_master
     context['name'] = name
     context['teachingtasks'] = teachingtasks
     return render(request,'teacher/teacher_task.html',context)
@@ -343,7 +344,7 @@ def teacher_attendance(request,taskpk):
 
 #from administrative.forms import SelectTeacherForm
 from course.models import Course
-from teachingtask.forms import TaskForm,TasksForm
+from teachingtask.forms import TaskForm,TaskmodelForm,Select_Teacher
 
 @login_required(login_url="/teacher/")
 
@@ -373,8 +374,6 @@ def select_teacher(request):
             context['iscore'] = formset
             return render(request,'teacher/select_teacher.html',context)
 
-
-
     else:
         #得到所属教研室 teacher.belong_to
         #得到教师select
@@ -387,7 +386,7 @@ def select_teacher(request):
         development_teachers = Teacher.objects. \
             filter(belong_to = teacher.belong_to).values_list('pk','teacher__username')
 
-        print("heheh",(development_teachers))
+        #print("heheh",(development_teachers))
 
         data = []
         for t in task:
@@ -406,7 +405,6 @@ def select_teacher(request):
         context['group_master'] = group_master
         #newformset = newformset(form_kwargs={'belong':teacher.belong_to})
         context['iscore'] = newformset(initial = data)
-        context['baseform'] = TaskForm()
         return render(request,'teacher/select_teacher.html',context)
 
 
@@ -452,5 +450,8 @@ def print_score(request,taskpk):
     context['scores'] = data
     context['scores_num'] = scores_num
     return render(request,'teacher/print_score.html',context)
+
+
+
 
 
