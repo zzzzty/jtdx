@@ -5,26 +5,26 @@
 {% block content %}
 
 
-<form action="" method="post">
-    {% csrf_token %}
-<table>
-{{ iscore.management_form }}
-{% for register_form in iscore %}
-<tr>
-    {% for field in register_form %}
-        <td>
-        {{ field }}<p class="text-danger">{{ field.errors.as_text }}</p>
-        </td>
-    {% endfor %}
-        <span class="pull-left text-danger">{{ register_form.non_field_errors }}</span>
-</tr>
-{% endfor %}
-<input type="submit" value="goo">
-</table>
-</form>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+        {{ iscore.management_form }}
+            {% for register_form in iscore %}
+                <tr>
+                    {% for field in register_form %}
+                    <td>
+                    {{ field }}<p class="text-danger">{{ field.errors.as_text }}</p>
+                    </td>
+                    {% endfor %}
+                    <span class="pull-left text-danger">{{ register_form.non_field_errors }}</span>
+                </tr>
+            {% endfor %}
+        <input type="submit" value="goo">
+        </table>
+    </form>
 
 
-<script>
+    <script>
 
-</script>
+    </script>
 {% endblock %}
