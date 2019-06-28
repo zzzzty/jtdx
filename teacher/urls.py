@@ -11,4 +11,5 @@ urlpatterns = [
     path('attendance/<int:taskpk>',views.teacher_attendance,name = 'attendance'),
     path('select_teacher/',views.select_teacher,name="select_teacher"),
     path('print_score/<int:taskpk>',views.print_score,name = 'print_score'),
+    path('groupteacher/',views.group_teacher,name='groupteacher'),
 ]

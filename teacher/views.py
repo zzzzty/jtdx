@@ -12,6 +12,7 @@ from attendance.models import Attendance,AttendanceReason
 from django.forms import modelformset_factory,formset_factory
 from django.contrib.auth import authenticate
 from student.forms import StudentLoginForm
+from django.http import JsonResponse
 # Create your views here.
 
 def teacher_home(request):
@@ -405,6 +406,7 @@ def select_teacher(request):
         context['group_master'] = group_master
         #newformset = newformset(form_kwargs={'belong':teacher.belong_to})
         context['iscore'] = newformset(initial = data)
+        context['belong'] = teacher.belong_to.pk
         return render(request,'teacher/select_teacher.html',context)
 
 
@@ -452,6 +454,17 @@ def print_score(request,taskpk):
     return render(request,'teacher/print_score.html',context)
 
 
-
+def group_teacher(request):
+    belong = request.GET.get('belong',None)
+    if belong:
+        teachers = Teacher.objects.filter(belong_to_id=belong)
+        #teachers = Teacher.objects.filter()
+        list_data = []
+        for t in teachers:
+            list_data.append([str(t.pk),str(t.teacher)])
+        data = {}
+        data['teachers'] = list_data
+        print(data)
+        return  JsonResponse(data)
 
 
