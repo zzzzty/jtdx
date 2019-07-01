@@ -31,3 +31,9 @@ def student_home(request):
     context['teacherloginform'] = teacherloginform
     return render(request,'student/student_home.html',context)
 
+
+def rate_teacher(request):
+
+    return render(request,'student/rateteacher.html',{})
+
+

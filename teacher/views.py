@@ -13,6 +13,7 @@ from django.forms import modelformset_factory,formset_factory
 from django.contrib.auth import authenticate
 from student.forms import StudentLoginForm
 from django.http import JsonResponse
+from django.db.models.aggregates import Count
 # Create your views here.
 
 def teacher_home(request):
@@ -93,6 +94,7 @@ from django.contrib.auth.decorators import login_required,permission_required
 
 @login_required(login_url="/teacher/")
 def teacher_task(request):
+    #正常的教学任务
     name = request.user.username
     user = User.objects.get(username = name)
     #如果是个学生如何 使用try 方法解决
@@ -101,11 +103,23 @@ def teacher_task(request):
     semester = Semester.objects.get(is_execute = True)
     #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    teachingtasks = TeachingTask.objects.filter(teacher=teacher)
+    teachingtasks = TeachingTask.objects.filter(teacher=teacher,semester=semester)
     context = {}
     context['group_master'] = teacher.is_group_master
     context['name'] = name
     context['teachingtasks'] = teachingtasks
+    #重修的教学任务
+    #需要更多的条件
+    scores = Score.objects.filter(make_up_teacher=teacher) \
+        .values_list('task__course','task__semester')
+    final_coures ={}
+    for s in scores:
+        if s not in final_coures.keys():
+            final_coures[s] = 1
+        else:
+            final_coures[s] += 1
+    context['scores'] = final_coures
+    print(final_coures)
     return render(request,'teacher/teacher_task.html',context)
 
 from score.forms import IScore
@@ -465,7 +479,10 @@ def group_teacher(request):
             list_data.append([str(t.pk),str(t.teacher)])
         data = {}
         data['teachers'] = list_data
-        print(data)
+        #print(data)
         return  JsonResponse(data)
+
+
+
 
 

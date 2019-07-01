@@ -9,9 +9,11 @@ class TaskForm(forms.Form):
     semester = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True}))
     classes = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True}))
     before_teacher = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True}))
-    aselect = forms.ModelChoiceField(queryset=Teacher.objects.filter(),widget=forms.Select(attrs={'class':'form-control',}))
     teacher = forms.ModelChoiceField(queryset=TeacherDevelopment.objects.filter(), \
         widget=forms.Select(attrs={'class':'form-control','onchange':'testajax(this);'}))
+    aselect = forms.ModelChoiceField(queryset=Teacher.objects.filter(), \
+        widget=forms.Select(attrs={'class':'form-control',}))
+    
 
     def clean_aselect(self):
         aselect = self.cleaned_data['aselect']

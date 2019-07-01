@@ -7,6 +7,7 @@
     <div class="col-md-10 col-md-offset-1">
     <a href="{% url 'teacher_task' %}?semester_from_page = semester">选择学年学期semester</a>
         <table class="table table-striped">
+        <tr colspan="7">SSSSSSSSSSSSS</tr>
         <tr>
             <th>序号</th>
             <th>学年学期</th>
@@ -35,7 +36,7 @@
                 {% else %}
                 <td>
                     <a href="{% url 'print_score' teachingtask.pk %}" class="btn btn-success">打印期末成绩</a>
-                    <a href="{% url 'change_score' teachingtask.pk%}" class="btn btn-warning">更改成绩</a>
+                    <a href="{% url 'change_score' teachingtask.pk %}" class="btn btn-warning">更改成绩</a>
                 </td>
                 <td></td>
                 {% endif %}
@@ -47,4 +48,14 @@
     </table>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        {% for s,z in scores.items %}
+            {{ s }}{{ z }} 
+        {% endfor %}
+    </div>
+</div>
+
+
 {% endblock %}
