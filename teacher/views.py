@@ -368,7 +368,8 @@ def select_teacher(request):
             for aform in formset:
                 task = aform.cleaned_data['task']
                 teacher = aform.cleaned_data['teacher']
-                print(task,"+++",teacher)
+                aselect = aform.cleaned_data['aselect']
+                print(task,"+++",teacher,"+++",aselect)
             return redirect('/teacher/select_teacher/')
         else:
             context = {}
@@ -457,7 +458,7 @@ def print_score(request,taskpk):
 def group_teacher(request):
     belong = request.GET.get('belong',None)
     if belong:
-        teachers = Teacher.objects.filter(belong_to_id=belong)
+        teachers = Teacher.objects.filter(belong_to_id=belong).order_by('-is_group_master','teacher')
         #teachers = Teacher.objects.filter()
         list_data = []
         for t in teachers:
