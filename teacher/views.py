@@ -14,6 +14,7 @@ from django.contrib.auth import authenticate
 from student.forms import StudentLoginForm
 from django.http import JsonResponse
 from django.db.models.aggregates import Count
+from course.models import Course
 # Create your views here.
 
 def teacher_home(request):
@@ -109,17 +110,27 @@ def teacher_task(request):
     context['name'] = name
     context['teachingtasks'] = teachingtasks
     #重修的教学任务
-    #需要更多的条件
-    scores = Score.objects.filter(make_up_teacher=teacher) \
+    #需要更多的条件,execute_semester=semester
+    scores = Score.objects.filter(make_up_teacher=teacher, \
+        is_execute = True ,execute_semester=semester) \
         .values_list('task__course','task__semester')
     final_coures ={}
     for s in scores:
         if s not in final_coures.keys():
-            final_coures[s] = 1
+            final_coures[s] = [1,]
         else:
-            final_coures[s] += 1
+            final_coures[s][0] += 1
+    
+    for s in final_coures.keys():
+        #print(s[0])
+        #print(s[1],"___")
+        course = Course.objects.get(pk=s[0])
+        semester = Semester.objects.get(pk=s[1])
+        final_coures[s].append(course)
+        final_coures[s].append(semester)
+
     context['scores'] = final_coures
-    print(final_coures)
+    #print(final_coures)
     return render(request,'teacher/teacher_task.html',context)
 
 from score.forms import IScore
@@ -483,6 +494,39 @@ def group_teacher(request):
         return  JsonResponse(data)
 
 
+@login_required(login_url="/teacher/")
+def input_score(request,coursepk,semesterpk):
+    #构建新的make_up应用，对重修、补考进行统一的管理？？
+    if request.method == "POST":
+        newformset = formset_factory(IScore,extra=0)
+        f = newformset(request.POST,request.FILES)
+        context = {}
+    else:
+        course = get_object_or_404(Course,pk=coursepk)
+        semester = get_object_or_404(Semester,pk=semesterpk)
+        name = request.user.username
+        user = User.objects.get(username = name)
+        #如果是个学生如何 使用try 方法解决
+        teacher = Teacher.objects.get(teacher = user)
 
+        #进行查询那些成绩是需要录入的,以下查询限定了某学期的某中课程
+        datas = Score.objects.filter(task__course=course,task__semester=semester, \
+            make_up_teacher= teacher,make_up=2,is_make_up_input=False)
+        #print(datas)
+        newformset = formset_factory(IScore,extra=0)
 
+        data = []
+        for s in datas:
+            data.append({'student_username':s.student, \
+                        'student':str(s.student).split('_')[0], \
+                        'task':s.task, \
+                        'score':0, \
+                        'student_num':s.student.student_num
+                        })
+        context = {}
+        context['task'] = course
+        #context['taskpk'] = taskpk
+        context['classes'] = "重修"+str(semester)
+        context['iscore']  = newformset(initial = data)
+    return render(request,'teacher/teacher_makeup_score.html',context)
 

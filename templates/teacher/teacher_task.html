@@ -6,6 +6,7 @@
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
     <a href="{% url 'teacher_task' %}?semester_from_page = semester">选择学年学期semester</a>
+        <h2>本学期教学任务</h2>
         <table class="table table-striped">
         <tr colspan="7">SSSSSSSSSSSSS</tr>
         <tr>
@@ -51,8 +52,34 @@
 
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
+        <h2>重修</h2>
+        <table class="table">
+            <tr>
+                <th>序号</th>
+                <th>学年学期</th>
+                <th>教师姓名</th>
+                <th>课程名称</th>
+                <th>人数</th>
+                <th>任务</th>
+            </tr>
+                {% for s,z in scores.items %}
+            <tr>
+                <td><h5>{{forloop.counter}}</h5></td>
+                <td><h5>{{z.2}}</h5></td>
+                <td><h5>{{request.user}}</h5></td>
+                <td><h5>{{z.1}}</h5></td>
+                <td><h5>{{z.0}}</h5></td>
+                <td>
+                    <a href="{% url 'input_score' s.0 s.1%}" class="btn btn-success">成绩录入</a>
+                    <a href="" class="btn btn-warning">打印成绩单</a>
+                </td>
+            </tr>
+            {% endfor %}
+
+        </table>
         {% for s,z in scores.items %}
-            {{ s }}{{ z }} 
+            dictkey{{ s }}dictvalue{{ z }}
+            课程id-{{s.0}}………… 学年id-{{ s.1 }}
         {% endfor %}
     </div>
 </div>

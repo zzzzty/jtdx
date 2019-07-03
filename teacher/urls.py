@@ -12,4 +12,5 @@ urlpatterns = [
     path('select_teacher/',views.select_teacher,name="select_teacher"),
     path('print_score/<int:taskpk>',views.print_score,name = 'print_score'),
     path('groupteacher/',views.group_teacher,name='groupteacher'),
+    path('input_score/<int:coursepk>/<int:semesterpk>',views.input_score,name="input_score"),
 ]
