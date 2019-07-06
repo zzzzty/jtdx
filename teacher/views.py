@@ -500,6 +500,7 @@ def input_score(request,coursepk,semesterpk):
     if request.method == "POST":
         newformset = formset_factory(IScore,extra=0)
         f = newformset(request.POST,request.FILES)
+        print(f.as_table())
         context = {}
     else:
         course = get_object_or_404(Course,pk=coursepk)
