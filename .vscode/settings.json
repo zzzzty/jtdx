@@ -10,5 +10,5 @@
     //文件显示全路径
     "window.title": "${dirty}${activeEditorLong}${separator}${rootName}${separator}${appName}",
     "editor.fontSize": 15,
-    "editor.fontFamily": "'Ya Hei', 'monospace', monospace, 'Droid Sans Fallback'",
+    "editor.fontFamily": "'Ya Hei', 'monospace', 'Droid Sans Fallback'",
 }

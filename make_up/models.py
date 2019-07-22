@@ -14,6 +14,7 @@ class MakeUpTask(models.Model):
     teacher = models.ForeignKey(Teacher,on_delete=models.DO_NOTHING)
     student = models.ForeignKey(Student,on_delete=models.DO_NOTHING,null=True)
     make_up = models.IntegerField(default=1)
+    is_input = models.BooleanField(default=False)
     create_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
