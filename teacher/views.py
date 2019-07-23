@@ -110,19 +110,23 @@ def teacher_task(request):
     context['group_master'] = teacher.is_group_master
     context['name'] = name
     context['teachingtasks'] = teachingtasks
-
     #重修的教学任务
     #需要更多的条件,execute_semester=semester
     scores = MakeUpTask.objects.filter(teacher=teacher, \
         execute_semester=semester,is_input = False) \
-        .values_list('course','semester')
-    #print(scores)
+        .values_list('course','semester','make_up')
+    print(scores)
     final_coures ={}
+    #任务标记是补考，重修还是其它
+    makeupsign = []
     for s in scores:
         if s not in final_coures.keys():
             final_coures[s] = [1,]
         else:
             final_coures[s][0] += 1
+        if s[2] not in makeupsign:
+            makeupsign.append(s[2])
+    print(makeupsign)
     
     for s in final_coures.keys():
         #print(s[0])
@@ -131,7 +135,22 @@ def teacher_task(request):
         semester = Semester.objects.get(pk=s[1])
         final_coures[s].append(course)
         final_coures[s].append(semester)
-
+    print(final_coures)
+    if 2 in makeupsign:
+        bukao = True
+    else:
+        bukao = False
+    if 3 in makeupsign:
+        chongxiu = True
+    else:
+        chongxiu = False
+    if 4 in makeupsign:
+        biyeqian = True
+    else:
+        biyeqian = False
+    context['bukao'] = bukao
+    context['chongxiu'] = chongxiu
+    context['biyeqian'] = biyeqian
     context['scores'] = final_coures
     #print(final_coures)
     return render(request,'teacher/teacher_task.html',context)
@@ -222,7 +241,9 @@ def teacher_insert_score(request):
             context = {}
             context['name'] = name
             context['teachingtasks'] = teachingtasks
+            context['iscore'] = newformset(initial = data)
             return render(request,'teacher/teacher_task.html',context)
+            #return render(request,'teacher/teacher_score.html',context)
         else:
             context['iscore'] = f
             return render(request,'teacher/teacher_score.html',context)
@@ -442,7 +463,6 @@ def select_teacher(request):
 @login_required(login_url="/teacher/")
 def print_score(request,taskpk):
     task = TeachingTask.objects.get(pk = taskpk)
-
     scores = Score.objects.filter(task = task,root__isnull=True)
     #有多少条数据
     scores_num = scores.count()
@@ -507,7 +527,17 @@ def input_score(request,coursepk,semesterpk,make):
     teacher = Teacher.objects.get(teacher = user)
     course = get_object_or_404(Course,pk=coursepk)
     semester = get_object_or_404(Semester,pk=semesterpk)
+    make_up = make
+    data = input_score_formsetdata(course=course,semester=semester, \
+        execute_semester=semester,teacher=teacher,make=make)
     context = {}
+    context['task'] = course
+    #context['taskpk'] = taskpk
+    if make_up == 2:
+        context['classes'] = "补考"+str(semester)
+    if make_up == 3:
+        context['classes'] = "重修"+str(semester)
+
     if request.method == "POST":
         newformset = formset_factory(IScore,extra=0)
         f = newformset(request.POST,request.FILES)
@@ -519,12 +549,11 @@ def input_score(request,coursepk,semesterpk,make):
                 score = i.cleaned_data['score']
                 #int 2 是重修
                 task = i.cleaned_data['task']
-                make_up = 2
                 print(scorepk,score,task,teacher)
-                basescore = Score.objects.get(pk = scorepk)
+                basescore = Score.objects.filter(pk = scorepk)[0]
                 try:
-                    basescore = Score.objects.get(pk = scorepk,make_up=make_up)
-                    print("now we have it")
+                    basescore = Score.objects.get(root = basescore,make_up=make_up)
+                    print("now we have it%s"%basescore)
                 except:
                     if score != 0:
                         makescore = Score()
@@ -539,38 +568,34 @@ def input_score(request,coursepk,semesterpk,make):
                         makescore.save()
                         mtask = MakeUpTask.objects.get(course=course,semester = semester, \
                                         execute_semester = semester,teacher = teacher, \
-                                        make_up=2,is_input=False,student = basescore.student)
+                                        make_up=make_up,is_input=False,student = basescore.student)
                         mtask.is_input = True
                         mtask.save()
                     else:
                         pass
+            data = input_score_formsetdata(course=course,semester=semester,execute_semester=semester,teacher=teacher,make=make)
+            f = newformset(initial = data)
+            context['iscore'] = f
         else:
             context['iscore'] = f
-        
     else:
-        #进行查询那些成绩是需要录入的,以下查询限定了某学期的某中课程
-        tasks = MakeUpTask.objects.filter(course=course,semester = semester, \
-                execute_semester = semester,teacher = teacher, \
-                make_up=2,is_input=False)
-        #print(tasks)
-        #datas = Score.objects.filter(task__course=course,task__semester=semester, \
-        #    make_up_teacher= teacher,make_up=2,is_make_up_input=False)
-        #print(datas)
         newformset = formset_factory(IScore,extra=0)
-
-        data = []
-        for s in tasks:
-            hiddenelement = Score.objects.get(student = s.student,task__course=s.course, \
-                task__semester=s.semester,make_up = 1)
-            data.append({'student_username':hiddenelement.pk, \
-                        'student_num':s.student.student_num, \
-                        'student':str(s.student).split('_')[0], \
-                        'task':2, \
-                        'score':0
-                        })
-        context = {}
-        context['task'] = course
-        #context['taskpk'] = taskpk
-        context['classes'] = "重修"+str(semester)
         context['iscore']  = newformset(initial = data)
     return render(request,'teacher/teacher_makeup_score.html',context)
+
+def input_score_formsetdata(course,semester,execute_semester,teacher,make):
+    data = []
+     #进行查询那些成绩是需要录入的,以下查询限定了某学期的某中课程
+    tasks = MakeUpTask.objects.filter(course=course,semester = semester, \
+                execute_semester = semester,teacher = teacher, \
+                make_up=make,is_input=False)
+    for s in tasks:
+        hiddenelement = Score.objects.get(student = s.student,task__course=s.course, \
+            task__semester=s.semester,make_up = 1)
+        data.append({'student_username':hiddenelement.pk, \
+                    'student_num':s.student.student_num, \
+                    'student':str(s.student).split('_')[0], \
+                    'task':2, \
+                    'score':0
+                    })
+    return data
