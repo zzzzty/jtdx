@@ -367,37 +367,47 @@ def teacher_attendance(request,taskpk):
     task = TeachingTask.objects.get(pk = taskpk)
     students = Student.objects.filter(classes = task.classes)
     #formset = AttendanceForm(classes = task.classes)
-    attendance_set = Attendance.objects.filter(task = task)
+    attendance_set = Attendance.objects.filter(task = task).order_by('-create_time')
+    #对教师是否有这个教学任务进行验证
+    name = request.user.username
+    user = User.objects.get(username = name)
+    #teacher_info
+    teacher = Teacher.objects.get(teacher = user)
+    
+    if task.teacher == teacher:
+        if request.method == "POST":
+            students_pk = request.POST.getlist('student')
+            taskpk = request.POST.get('taskpk',None)
+            attendance_reason = request.POST.get('attendance_reason',None)
+            attendance_reason = AttendanceReason.objects.get(name = attendance_reason )
+            task = TeachingTask.objects.get(pk = taskpk )
+            attendance_time = request.POST.get('attendance_time',None)
+            select_detail = request.POST.get('select_detail',None)
+            for s in students_pk:
+                a = Attendance()
+                student = Student.objects.get(pk = int(s))
+                a.student = student
+                a.task = task
+                a.attendance_time = attendance_time
+                a.attendance_reason = attendance_reason
+                a.attendance_detail = select_detail
+                try:
+                    a.save()
+                except:
+                    pass
+                    #return HttpResponse("已经存在")
 
-    if request.method == "POST":
-        students_pk = request.POST.getlist('student')
-        taskpk = request.POST.get('taskpk',None)
-        attendance_reason = request.POST.get('attendance_reason',None)
-        attendance_reason = AttendanceReason.objects.get(name = attendance_reason )
-        task = TeachingTask.objects.get(pk = taskpk )
-        attendance_time = request.POST.get('attendance_time',None)
-        for s in students_pk:
-            a = Attendance()
-            student = Student.objects.get(pk = int(s))
-            a.student = student
-            a.task = task
-            a.attendance_time = attendance_time
-            a.attendance_reason = attendance_reason
-            try:
-                a.save()
-            except:
-                return HttpResponse("已经存在")
-
-    #传入任务班级
-    formset = AttendanceForm(classes = task.classes)
-    return render(request,'teacher/attendance.html',locals())
+        #传入任务班级
+        formset = AttendanceForm(classes = task.classes)
+        return render(request,'teacher/attendance.html',locals())
+    else:
+        return HttpResponse('没有这个教学任务')
 
 #from administrative.forms import SelectTeacherForm
 from course.models import Course
 from teachingtask.forms import TaskForm,TaskmodelForm,Select_Teacher
 
 @login_required(login_url="/teacher/")
-
 def select_teacher(request):
     name = request.user.username
     user = User.objects.get(username = name)

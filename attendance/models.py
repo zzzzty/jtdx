@@ -24,7 +24,9 @@ class Attendance(models.Model):
     #考勤更改为
     attendance_change =  models.ForeignKey(AttendanceReason,on_delete=models.DO_NOTHING, \
                         blank=True,null=True,related_name="attendance_change")
+    #考勤节次
+    attendance_detail = models.CharField(max_length=20,null=True)
 
     class Meta:
-         unique_together = ['task','student','attendance_time']
+         unique_together = ['task','student','attendance_time','attendance_detail']
 

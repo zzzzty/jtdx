@@ -76,16 +76,16 @@ class RegTeacherForm(forms.Form):
 
 class AttendanceForm(forms.Form):
     choices = [
-        ("1","第1节课"),
-        ("2","第2节课"),
-        ("3","第3节课"),
-        ("4","第4节课"),
-        ("5","第5节课"),
-        ("6","第6节课"),
+        ("第1节课","第1节课"),
+        ("第2节课","第2节课"),
+        ("第3节课","第3节课"),
+        ("第4节课","第4节课"),
+        ("第5节课","第5节课"),
+        ("第6节课","第6节课"),
     ]
     student = forms.ModelChoiceField(queryset=None, \
         widget=forms.Select(attrs={'class':'form-control','multiple':'multiple', \
-            'placeholder':'选择时间','size':'18'}))
+            'placeholder':'选择时间','size':'15'}))
     attendance_time = forms.CharField(label='考勤日期' \
         ,required=True,widget=forms.TextInput(attrs={'class':'form-control','placeholder':'选择时间'}))
     select_detail = forms.ChoiceField(choices = choices)

@@ -3,9 +3,9 @@ from .models import Score
 class IScore(forms.Form):
     student_username = forms.CharField(widget=forms.HiddenInput(),label="")
     task = forms.CharField(widget=forms.HiddenInput(),label="")
-    student_num = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True}))
-    student = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True}))
-    score = forms.IntegerField(label="",widget=forms.TextInput())
+    student_num = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True,"style":"width:150px"}))
+    student = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True,"style":"width:150px"}))
+    score = forms.IntegerField(label="",widget=forms.TextInput(attrs={"style":"width:60px"}))
 
     def clean_score(self):
         score = self.cleaned_data['score']
