@@ -115,7 +115,7 @@ def teacher_task(request):
     scores = MakeUpTask.objects.filter(teacher=teacher, \
         execute_semester=semester,is_input = False) \
         .values_list('course','semester','make_up')
-    print(scores)
+    #print(scores)
     final_coures ={}
     #任务标记是补考，重修还是其它
     makeupsign = []
@@ -126,7 +126,7 @@ def teacher_task(request):
             final_coures[s][0] += 1
         if s[2] not in makeupsign:
             makeupsign.append(s[2])
-    print(makeupsign)
+   # print(makeupsign)
     
     for s in final_coures.keys():
         #print(s[0])
@@ -135,7 +135,7 @@ def teacher_task(request):
         semester = Semester.objects.get(pk=s[1])
         final_coures[s].append(course)
         final_coures[s].append(semester)
-    print(final_coures)
+    #print(final_coures)
     if 2 in makeupsign:
         bukao = True
     else:
@@ -559,7 +559,7 @@ def input_score(request,coursepk,semesterpk,make):
                 score = i.cleaned_data['score']
                 #int 2 是重修
                 task = i.cleaned_data['task']
-                print(scorepk,score,task,teacher)
+                #print(scorepk,score,task,teacher)
                 basescore = Score.objects.filter(pk = scorepk)[0]
                 try:
                     basescore = Score.objects.get(root = basescore,make_up=make_up)
@@ -583,7 +583,8 @@ def input_score(request,coursepk,semesterpk,make):
                         mtask.save()
                     else:
                         pass
-            data = input_score_formsetdata(course=course,semester=semester,execute_semester=semester,teacher=teacher,make=make)
+            data = input_score_formsetdata(course=course,semester=semester \
+                ,execute_semester=semester,teacher=teacher,make=make)
             f = newformset(initial = data)
             context['iscore'] = f
         else:
@@ -609,3 +610,36 @@ def input_score_formsetdata(course,semester,execute_semester,teacher,make):
                     'score':0
                     })
     return data
+
+def print_name_makeup(request,coursepk,semesterpk,make):
+    #coursepk 课程id
+    #semesterpk 课程所属学期
+    #execute_semester 课程执行学期
+    #students = Student.objects.filter(classes = task.classes)
+    
+    course = get_object_or_404(Course,id=coursepk)
+    semester = get_object_or_404(Semester,id=semesterpk)
+    execute_semester = Semester.objects.get(is_execute=True)
+    #teacher_info
+    name = request.user.username
+    user = User.objects.get(username = name)
+    teacher = Teacher.objects.get(teacher = user)
+    
+    makeuptasks = MakeUpTask.objects.filter(course=course,semester=semester, \
+                teacher = teacher,is_input=False)
+    
+    
+    studentinfos = []
+    for s in makeuptasks:
+        studentinfos.append(str(s.student.student.username).split("_"))
+    context = {}
+    context['students'] = studentinfos
+    context['task'] =str(course)+str(semester)
+    #next_loop = 45 - students.count()
+    next_index = []
+    for i in range(makeuptasks.count()+1,45,1):
+        next_index.append(i)
+    context['next_index'] = next_index
+   
+    return render(request,'teacher/name.html',context)
+    
