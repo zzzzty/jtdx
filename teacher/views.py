@@ -17,7 +17,7 @@ from django.db.models.aggregates import Count
 from course.models import Course
 from make_up.models import MakeUpTask
 # Create your views here.
-
+#教师登陆主页
 def teacher_home(request):
     #在此是否requestuser检测是否存在用户
     if request.method == 'POST':
@@ -65,7 +65,7 @@ def teacher_home(request):
                 context = {}
                 context['teacherloginform'] = StudentLoginForm()
                 return render(request,'student/student_home.html',context)
-
+#注册
 def register(request):
     if request.method == 'POST':
         register_form = RegTeacherForm(request.POST)
@@ -93,7 +93,7 @@ def register(request):
     return render(request,'teacher/teacher_register.html',context)
 
 from django.contrib.auth.decorators import login_required,permission_required
-
+#教师教学任务
 @login_required(login_url="/teacher/")
 def teacher_task(request):
     #正常的教学任务
@@ -159,7 +159,7 @@ from score.forms import IScore
 from student.models import Student
 from django.forms import formset_factory
 
-
+#成绩录入
 @login_required(login_url="/teacher/")
 def teacher_insert_score(request):
     #教学任务id
@@ -250,6 +250,7 @@ def teacher_insert_score(request):
 
 from classes.models import Classes
 @login_required(login_url="/teacher/")
+#平时成绩单打印
 def print_name(request,taskpk):
     task = get_object_or_404(TeachingTask,id = taskpk)
     students = Student.objects.filter(classes = task.classes)
@@ -266,6 +267,7 @@ def print_name(request,taskpk):
     context['next_index'] = next_index
     return render(request,'teacher/name.html',context)
 
+#更改成绩请求
 @login_required(login_url="/teacher/")
 def change_score(request,taskpk):
     #the get way
@@ -363,6 +365,7 @@ def change_score(request,taskpk):
             return render(request,'teacher/changescore.html',context)
         
 @login_required(login_url="/teacher/")
+#考勤
 def teacher_attendance(request,taskpk):
     task = TeachingTask.objects.get(pk = taskpk)
     students = Student.objects.filter(classes = task.classes)
@@ -469,7 +472,6 @@ def select_teacher(request):
         context['belong'] = teacher.belong_to.pk
         return render(request,'teacher/select_teacher.html',context)
 
-
 @login_required(login_url="/teacher/")
 def print_score(request,taskpk):
     task = TeachingTask.objects.get(pk = taskpk)
@@ -511,7 +513,6 @@ def print_score(request,taskpk):
     context['scores'] = data
     context['scores_num'] = scores_num
     return render(request,'teacher/print_score.html',context)
-
 
 def group_teacher(request):
     belong = request.GET.get('belong',None)
