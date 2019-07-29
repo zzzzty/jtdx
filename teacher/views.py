@@ -108,6 +108,9 @@ def teacher_task(request):
     teachingtasks = TeachingTask.objects.filter(teacher=teacher,semester=semester)
     context = {}
     context['group_master'] = teacher.is_group_master
+    #判断该教师是否为班主任
+    classesmaster = Classes.objects.filter(teacher = teacher).count()
+    context['classesmaster'] = classesmaster
     context['name'] = name
     context['teachingtasks'] = teachingtasks
     #重修的教学任务
@@ -251,15 +254,21 @@ def teacher_insert_score(request):
 from classes.models import Classes
 @login_required(login_url="/teacher/")
 #平时成绩单打印
-def print_name(request,taskpk):
-    task = get_object_or_404(TeachingTask,id = taskpk)
-    students = Student.objects.filter(classes = task.classes)
+def print_name(request,taskpk,sign):
+    context = {}
+    #sign 为1时返回班级名单
+    if sign != 1:
+        task = get_object_or_404(TeachingTask,id = taskpk)
+        students = Student.objects.filter(classes = task.classes)
+        context['task'] =task
+    else:
+        classes = get_object_or_404(Classes,id = taskpk)
+        students = Student.objects.filter(classes = classes)
+        context['task'] = classes
     studentinfos = []
     for s in students:
         studentinfos.append(str(s.student.username).split("_"))
-    context = {}
     context['students'] = studentinfos
-    context['task'] =task
     #next_loop = 45 - students.count()
     next_index = []
     for i in range(students.count()+1,45,1):
@@ -612,6 +621,7 @@ def input_score_formsetdata(course,semester,execute_semester,teacher,make):
                     })
     return data
 
+@login_required(login_url="/teacher/")
 def print_name_makeup(request,coursepk,semesterpk,make):
     #coursepk 课程id
     #semesterpk 课程所属学期
@@ -643,4 +653,18 @@ def print_name_makeup(request,coursepk,semesterpk,make):
     context['next_index'] = next_index
    
     return render(request,'teacher/name.html',context)
-    
+
+def myclasses(request):
+    name = request.user.username
+    user = User.objects.get(username = name)
+    teacher = Teacher.objects.get(teacher = user)
+    classes = Classes.objects.filter(teacher = teacher)
+    students = Student.objects.filter(classes = classes[0])
+    context = {}
+    context['classes']= classes
+    classesmaster = Classes.objects.filter(teacher = teacher).count()
+    context['classesmaster'] = classesmaster
+    context['students']=students
+
+    return render(request,'teacher/myclasses.html',context)
+

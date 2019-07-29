@@ -30,7 +30,7 @@
                 {% if teachingtask.is_input is False %}
                 <input type="hidden" name="taskpk" value="{{ teachingtask.pk }}">
                 <td>
-                    <a href="{% url 'print_name' teachingtask.pk %}" class="btn btn-info">打印平时成绩</a>
+                    <a href="{% url 'print_name' teachingtask.pk 0 %}" class="btn btn-info">打印平时成绩</a>
                     <input type="submit" value="录入成绩" class="btn btn-danger">
                 </td>
                 <td><a href="{% url 'attendance' teachingtask.pk %}" class="btn btn-info">考勤管理</a></td>
@@ -71,7 +71,7 @@
                 <td><h5>{{z.0}}</h5></td>
                 <td>
                     <a href="{% url 'input_score' s.0 s.1 2%}" class="btn btn-success">成绩录入</a>
-                    <a href="{% url 'print_name_makeup' s.0 s.1 2%}" class="btn btn-warning">打印成绩单</a>
+                    <a href="{% url 'print_name_makeup' s.0 s.1 2%}" class="btn btn-warning">打印平时成绩单</a>
                 </td>
             </tr>
                 {% endif %}

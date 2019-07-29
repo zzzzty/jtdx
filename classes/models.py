@@ -8,8 +8,6 @@ class Classes(models.Model):
     name = models.CharField(max_length = 20)
     major = models.ForeignKey(Major,on_delete=models.DO_NOTHING)
     teacher = models.ForeignKey(Teacher,on_delete=models.DO_NOTHING)
-
-
     def __str__(self):
         return self.name 
     class Meta:

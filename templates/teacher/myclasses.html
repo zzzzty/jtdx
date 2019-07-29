@@ -1,0 +1,49 @@
+{% extends 'teacherbase.html' %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        打印平时成绩单
+    </title>
+    <link rel="stylesheet" href = "{% static 'printbase.css'%}">
+    <link rel="stylesheet" href = "{% static 'bootstrap-3.3.7/css/bootstrap.min.css'%}">
+    <script type="text/javascript" src="{% static 'jquery-1.12.4.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
+</head>
+<body>
+{% block content %}
+<div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <h2>我带的班级</h2>
+            <table class="table table-striped">
+            <tr>
+                <th>序号</th>
+                <th>年级</th>
+                <th>班级</th>
+                <th>专业</th>
+                <th>任务</th>
+            </tr>
+            {% for class in classes%}
+                <tr>
+                    <td><h5>{{forloop.counter}} </h5></td>
+                    <td><h5>{{class.major.grade}}</h5></td>
+                    <td><h5>{{class}}</h5></td>
+                    <td><h5>{{class.major.name}}</h5></td>
+                    <td>
+                        <a href="{% url 'print_name' class.pk 1 %}" class="btn btn-info"><h6>打印</br>名单</h6></a>
+                        <a href="" class="btn btn-info"><h6>学生成</br>绩查询</h6></a>
+                        <a href="" class="btn btn-info"><h6>学生</br>异常填报</h6></a>
+                    </td>
+                </tr>
+            {% empty %}
+            <h1>没有信息</h1>
+            {% endfor %}
+        </table>
+        </div>
+    </div>
+{% endblock %}
+</body>

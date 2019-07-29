@@ -28,6 +28,12 @@
                                 <a href="{% url 'select_teacher' %}" class="">教研组</a>
                             </li>
                             {% endif %}
+
+                            {% if classesmaster > 0 %}
+                            <li class="{% block nav_classesmaster_active %} {% endblock %}">
+                                <a href="{% url 'myclasses' %}" class="">班主任</a>
+                            </li>
+                            {% endif %}
                             <!-- <li class="{% block nav_teacher_active %} {% endblock %}">
                                 <a href="" class="">教师管理</a>
                             </li>

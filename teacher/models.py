@@ -11,7 +11,8 @@ class Teacher(models.Model):
     teacher = models.OneToOneField(User,on_delete=models.CASCADE,related_name = "teachers")
     is_group_master = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
-    
+    #用户头像上传存储
+    photo = models.ImageField(upload_to='users/%Y/%m/%d/',blank=True,null=True)
     belong_to = models.ForeignKey(TeacherDevelopment,on_delete=models.DO_NOTHING,null=True)
 
     def __str__(self):
