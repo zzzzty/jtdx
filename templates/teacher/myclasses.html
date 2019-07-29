@@ -35,7 +35,7 @@
                     <td><h5>{{class.major.name}}</h5></td>
                     <td>
                         <a href="{% url 'print_name' class.pk 1 %}" class="btn btn-info"><h6>打印</br>名单</h6></a>
-                        <a href="" class="btn btn-info"><h6>学生成</br>绩查询</h6></a>
+                        <a href="{% url 'teacher_query_score' class.pk%}" class="btn btn-info"><h6>学生成</br>绩查询</h6></a>
                         <a href="" class="btn btn-info"><h6>学生</br>异常填报</h6></a>
                     </td>
                 </tr>

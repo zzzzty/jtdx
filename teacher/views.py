@@ -351,7 +351,7 @@ def change_score(request,taskpk):
         #使用表单自带的has_changed方法进行验证？
         f = newformset(request.POST)
         if f.is_valid():
-            print(f)
+            #print(f)
             for i in f:
                 the_changed = []#用于记录更改的信息
                 score = Score.objects.get(pk = int(i.cleaned_data['changescore']))
@@ -653,11 +653,13 @@ def print_name_makeup(request,coursepk,semesterpk,make):
     context['next_index'] = next_index
    
     return render(request,'teacher/name.html',context)
-
+@login_required(login_url="/teacher/")
 def myclasses(request):
+    
     name = request.user.username
     user = User.objects.get(username = name)
     teacher = Teacher.objects.get(teacher = user)
+    #历史的班主任信息如何处理
     classes = Classes.objects.filter(teacher = teacher)
     students = Student.objects.filter(classes = classes[0])
     context = {}
@@ -667,4 +669,11 @@ def myclasses(request):
     context['students']=students
 
     return render(request,'teacher/myclasses.html',context)
+
+@login_required(login_url="/teacher/")
+def teacher_query_score(request,classespk):
+    
+    return HttpResponse(classespk)
+
+
 

@@ -17,11 +17,11 @@ class IScore(forms.Form):
 class CScore(forms.Form):
     changescore = forms.CharField(widget=forms.HiddenInput(),label="")
     #控制是否允许更改
-    task = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True,"class":""}))
-    student_num = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True}))
-    student = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True,"width":"10"}))
-    old_score = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True}))
-    change_to = forms.IntegerField(label="",widget=forms.TextInput())
+    task = forms.CharField(label="",widget=forms.HiddenInput(attrs={"readonly":True,"class":"","style":"width:150px"}))
+    student_num = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True,"style":"width:150px"}))
+    student = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True,"width":"10","style":"width:150px"}))
+    old_score = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True,"style":"width:150px"}))
+    change_to = forms.IntegerField(label="",widget=forms.TextInput(attrs={"style":"width:150px"}))
     change_reason = forms.CharField(
         widget=forms.Select(choices=(
         ('录入串行','录入串行'),
