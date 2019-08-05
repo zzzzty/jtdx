@@ -16,4 +16,5 @@ urlpatterns = [
     path('print_name/<int:coursepk>/<int:semesterpk>/<int:make>',views.print_name_makeup,name = 'print_name_makeup'),
     path('myclasses/',views.myclasses,name='myclasses'),
     path('teacher_query_score/<int:classespk>',views.teacher_query_score,name='teacher_query_score'),
+    path('filemaster/',views.filemaster,name="filemaster"),
 ]

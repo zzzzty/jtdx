@@ -675,5 +675,12 @@ def teacher_query_score(request,classespk):
     
     return HttpResponse(classespk)
 
+from filemaster.models import DocFile
+def filemaster(request):
+    docs = DocFile.objects.all()
 
+    context = {}
+    context['files'] = docs
+    return render(request,'teacher/filemaster.html',context)
+    
 

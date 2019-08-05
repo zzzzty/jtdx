@@ -21,7 +21,7 @@
                                 <a href="{% url 'teacher_task' %}" class="">我的教学任务</a>
                             </li>
                             <li class="{% block nav_student_active %} {% endblock %}">
-                                <a href="" class="">文件下载</a>
+                                <a href="{% url 'filemaster' %}" class="">文件下载</a>
                             </li>
                             {% if group_master %}
                             <li class="{% block nav_select_teacher_active %} {% endblock %}">
