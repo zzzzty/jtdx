@@ -676,11 +676,13 @@ def teacher_query_score(request,classespk):
     return HttpResponse(classespk)
 
 from filemaster.models import DocFile
+from filemaster.tables import DocFileTable
+from django_tables2 import RequestConfig
 def filemaster(request):
-    docs = DocFile.objects.all()
-
+    table = DocFileTable(DocFile.objects.all())
     context = {}
-    context['files'] = docs
+    RequestConfig(request).configure(table)
+    context['files'] = table
     return render(request,'teacher/filemaster.html',context)
     
 

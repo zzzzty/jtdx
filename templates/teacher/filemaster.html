@@ -1,35 +1,13 @@
-{% extends 'teacherbase.html' %}
+
 {% load staticfiles %}
-
-
+{% load render_table from django_tables2 %}
+{% block header_extends %} 
+    <link rel="stylesheet" href = "{% static 'bootstrap-3.3.7/css/bootstrap.min.css'%}">
+{% endblock %}
 {% block content %}
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
-    <table class="table">
-    <th colspan="5">
-        <p><h1>文件下载</h1></p>
-    </th>
-    <tr>
-    <td><h4>序号</h4></td>
-    <td><h4>名称</h4></td>
-    <td><h4>简介</h4></td>
-    <td><h4>创建时间</h4></td>
-    <td><h4>下载</h4></td>
-     </tr>
-         {% if files %}
-            {% for file in files %}
-                <tr>
-                <td><h5>{{ forloop.counter}}</h5></td>
-                <td><h5>{{file.name}}</h5></td>
-                <td><h5>{{ file.content}}</h5></td>
-                <td><h5>{{file.create_time}}</h5></td>
-                <td><h5><a href="{{ file.filepath.url }}">下载</a></h5></td>
-                </tr>
-            {% endfor %}
-            {% endif %}
-    </table>
+        {% render_table files%}
     </div>
 </div>
-
-
 {% endblock %}
