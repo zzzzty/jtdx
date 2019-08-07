@@ -30,6 +30,7 @@ theuser = Teacher.objects.all()[0]
 for i in range(1,nrows):
     #学生姓名
     student = data.cell(i,1).value
+    studentnickname = data.cell(i,1).value
     #学生学号
     student_num = get_value(data,i,0)
     #年级
@@ -45,6 +46,7 @@ for i in range(1,nrows):
     course = get_value(data,i,3)
     #教师
     teacher = get_value(data,i,12)
+    
     if len(teacher)<1:
         teacher = "liu"
     #分数
@@ -80,7 +82,7 @@ for i in range(1,nrows):
     
     from classes.models import Classes
     try:
-        classes = Classes.objects.get(name = classes,major = major)
+        classes = Classes.objects.get(name = classes)
     except:
         newclasses = Classes()
         newclasses.name = classes
@@ -107,6 +109,7 @@ for i in range(1,nrows):
         newstudent.student_num = student_num
         newstudent.student = a
         newstudent.classes = classes
+        newstudent.nick_name = studentnickname
         newstudent.save()
         student = newstudent
 

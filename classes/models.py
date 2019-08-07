@@ -11,5 +11,6 @@ class Classes(models.Model):
     def __str__(self):
         return self.name 
     class Meta:
+        unique_together = ['name','major']
         verbose_name = '班级'
         verbose_name_plural = '班级'

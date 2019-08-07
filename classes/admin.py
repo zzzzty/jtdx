@@ -4,3 +4,4 @@ from .models import Classes
 @admin.register(Classes)
 class ClassesAdmin(admin.ModelAdmin):
     list_display=['name','major','teacher']
+    search_fields = ['major__grade__name','name']

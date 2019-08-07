@@ -6,5 +6,5 @@ from .models import Course
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ['name','teacher','create_time']
+    list_display = ['name','teacher','belong_to','create_time']
     search_fields=('name',)
