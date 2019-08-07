@@ -23,7 +23,6 @@ class Semester(models.Model):
     #下一学期
     child_semester = models.ForeignKey('self',null=True, \
         related_name='child_semesters', \
-
         on_delete=models.CASCADE,blank=True)
     
     def __str__(self):
@@ -39,6 +38,8 @@ class TeachingTask(models.Model):
     semester = models.ForeignKey(Semester,on_delete=models.DO_NOTHING,null=True)
     create_time = models.DateTimeField(auto_now_add=True)
     is_input = models.BooleanField(default=False)
+    is_changed = models.BooleanField(default=False)
+    
     def __str__(self):
         return "%s %s %s"%(self.semester,self.course,self.classes) 
     class Meta:

@@ -5,10 +5,14 @@ from administrative.models import TeacherDevelopment
 
 class TaskForm(forms.Form):
     task = forms.CharField(widget=forms.HiddenInput(),label="")
-    course = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True}))
-    semester = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True}))
-    classes = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True}))
-    before_teacher = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True}))
+    course = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True, \
+        "style":"width:150px"}))
+    semester = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True, \
+        "style":"width:150px"}))
+    classes = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True, \
+        "style":"width:200px"}))
+    before_teacher = forms.CharField(label="",widget=forms.TextInput(attrs={"readonly":True, \
+        "style":"width:100px"}))
     teacher = forms.ModelChoiceField(queryset=TeacherDevelopment.objects.filter(), \
         widget=forms.Select(attrs={'class':'form-control','onchange':'testajax(this);'}))
     aselect = forms.ModelChoiceField(queryset=Teacher.objects.filter(), \

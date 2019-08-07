@@ -440,7 +440,16 @@ def select_teacher(request):
                 task = aform.cleaned_data['task']
                 teacher = aform.cleaned_data['teacher']
                 aselect = aform.cleaned_data['aselect']
-                print(task,"+++",teacher,"+++",aselect)
+                #task 为教学任务的主键值,teacher为所属教研组,aselect最新选择的教师
+                #print(task,"+++",teacher,"+++",aselect)
+                oldtask = TeachingTask.objects.get(pk=task)
+                newteacher = get_object_or_404(Teacher,teacher__username=aselect)
+                if newteacher != oldtask.teacher:
+                    #print(oldtask.teacher,newteacher)
+                    oldtask.teacher = newteacher
+                    oldtask.is_changed = True
+                    oldtask.save()
+
             return redirect('/teacher/select_teacher/')
         else:
             context = {}
@@ -453,7 +462,7 @@ def select_teacher(request):
         #formset = SelectTeacherForm(development = teacher.belong_to)
         #得到课程这个课程为所有课程
         courses = Course.objects.filter(belong_to = teacher.belong_to)
-        task = TeachingTask.objects.filter(semester = semester).order_by('course')
+        task = TeachingTask.objects.filter(semester = semester,is_changed=False).order_by('course')
         #反向查询加快速度？？？？？？？？？？？？？？？
         #ttt = TeachingTask.objects.filter()
         development_teachers = Teacher.objects. \
@@ -475,6 +484,7 @@ def select_teacher(request):
                 )
         context = {}
         # context['tasks'] = tasks
+        #print(task.count)
         context['group_master'] = group_master
         #newformset = newformset(form_kwargs={'belong':teacher.belong_to})
         context['iscore'] = newformset(initial = data)
@@ -672,8 +682,8 @@ def myclasses(request):
 
 @login_required(login_url="/teacher/")
 def teacher_query_score(request,classespk):
-    
-    return HttpResponse(classespk)
+    students = Student.objects.filter(classes_id = classespk)
+    return render(request,'namelist.html',{'students':students})
 
 from filemaster.models import DocFile
 from filemaster.tables import DocFileTable

@@ -5,7 +5,7 @@ from .models import TeachingTask,Semester
 
 @admin.register(TeachingTask)
 class TeachingTaskAdmin(admin.ModelAdmin):
-    list_display = ['semester','teacher','course','classes','create_time']
+    list_display = ['semester','teacher','course','classes','is_changed','create_time']
     search_fields = ['classes__name','teacher__teacher__username',]
 
 @admin.register(Semester)

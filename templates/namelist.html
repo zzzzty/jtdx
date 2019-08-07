@@ -1,0 +1,46 @@
+{% extends 'teacherbase.html'%}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4 col-md-offset-1">
+        {% for student in students %}
+            {{student.student}}<a href="{% url 'filemaster' %}" class="">{{student.pk}}</a>
+            <button onchange="testajax(this);">button</button>
+            </br>
+        {% empty%}
+        <p>没有学生</p>
+        {% endfor %}
+    </div>
+
+    <div class="col-md-4 col-md-offset-1">
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    // 使用js的方法对教师进行筛选
+    function testajax(ths){
+        var belong = $(ths).val();
+        $.ajax({
+            type:'GET',
+            url:"{% url 'groupteacher' %}?belong=" + belong,
+            dataType:'json',
+            success:function(data){
+                console.log(data);
+                var html = "";
+                for (var i=0;i<data['teachers'].length;i++){
+                    var iteam = data['teachers'][i][1];
+                    var id = data['teachers'][i][0];
+                    html += "<option value="+id+">"+iteam+"</option>";
+                }
+                // $("#id_form-0-aselect").html(html);
+                //id_form-0-teacher
+                //document.write( ths.id );
+                newid = ths.id.replace(/teacher/,"aselect");
+                //document.write( newid );
+                $("#"+newid).html(html);
+            }
+        })
+    }
+</script>
+{% endblock %}
