@@ -5,4 +5,5 @@ from .models import Teacher
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
     list_display = ['teacher','is_group_master','belong_to']
+    search_fields = ['teacher__username',]
 
