@@ -4,8 +4,8 @@
 <div class="row">
     <div class="col-md-4 col-md-offset-1">
         {% for student in students %}
-            {{student.student}}<a href="{% url 'filemaster' %}" class="">{{student.pk}}</a>
-            <button onchange="testajax(this);">button</button>
+            {{student.student}}<a href="{% url 'student_query_score' student.pk %}" class="">详情</a>
+            <!-- <button onchange="testajax(this);">button</button> -->
             </br>
         {% empty%}
         <p>没有学生</p>

@@ -19,7 +19,7 @@ class Score(models.Model):
 
     root = models.ForeignKey('self',null=True,related_name='rootscore', \
         on_delete=models.CASCADE,blank=True)
-    
+    #make_up 默认1 为期末  2 为补考 3为重修 4为毕业前 5为毕业后
     make_up = models.IntegerField(default=1)
     make_up_teacher = models.ForeignKey(Teacher,related_name="make_up_teacher" \
         ,on_delete=models.DO_NOTHING,null=True)

@@ -259,7 +259,7 @@ def print_name(request,taskpk,sign):
     #sign 为1时返回班级名单
     if sign != 1:
         task = get_object_or_404(TeachingTask,id = taskpk)
-        students = Student.objects.filter(classes = task.classes)
+        students = Student.objects.filter(classes = task.classes).order_by('classes','student_num')
         context['task'] =task
     else:
         classes = get_object_or_404(Classes,id = taskpk)
@@ -536,7 +536,7 @@ def print_score(request,taskpk):
 def group_teacher(request):
     belong = request.GET.get('belong',None)
     if belong:
-        teachers = Teacher.objects.filter(belong_to_id=belong).order_by('-is_group_master','teacher')
+        teachers = Teacher.objects.filter(belong_to_id=belong).order_by('-is_group_master','teacher__username')
         #teachers = Teacher.objects.filter()
         list_data = []
         for t in teachers:
@@ -619,7 +619,7 @@ def input_score_formsetdata(course,semester,execute_semester,teacher,make):
      #进行查询那些成绩是需要录入的,以下查询限定了某学期的某中课程
     tasks = MakeUpTask.objects.filter(course=course,semester = semester, \
                 execute_semester = semester,teacher = teacher, \
-                make_up=make,is_input=False)
+                make_up=make,is_input=False).order_by('student__classes','-student__student_num')
     for s in tasks:
         hiddenelement = Score.objects.get(student = s.student,task__course=s.course, \
             task__semester=s.semester,make_up = 1)
@@ -647,7 +647,7 @@ def print_name_makeup(request,coursepk,semesterpk,make):
     teacher = Teacher.objects.get(teacher = user)
     
     makeuptasks = MakeUpTask.objects.filter(course=course,semester=semester, \
-                teacher = teacher,is_input=False)
+                teacher = teacher,is_input=False).order_by('student__student_num')
     
     
     studentinfos = []
@@ -682,8 +682,27 @@ def myclasses(request):
 
 @login_required(login_url="/teacher/")
 def teacher_query_score(request,classespk):
-    students = Student.objects.filter(classes_id = classespk)
+    #使用用户模型的中的isactive进行用户是否有效进行判断
+    students = Student.objects.filter(classes_id = classespk,student__is_active = True).order_by('student_num')
     return render(request,'namelist.html',{'students':students})
+
+from django.db.models import Max,Avg
+@login_required(login_url="/teacher/")
+def student_score(request,studentpk):
+    #所有该生成绩
+    #students = Score.objects.filter(student_id=studentpk).order_by('task__semester','-task__course')
+    scores = Score.objects.filter(student_id=studentpk).order_by('task__semester','-task__course'). \
+        values_list('task','student').annotate(Max("score"))
+    #如果有重修等取最大成绩
+    data = []
+    for s in scores:
+        score = Score.objects.get(task_id= s[0],score=s[2],student_id=s[1])
+        print(data)
+        data.append(score)
+    return render(request,'score_list.html',{'students':data,'scores':scores})
+    #return render(request,'score_list.html',{'students':students,'scores':scores})
+
+
 
 from filemaster.models import DocFile
 from filemaster.tables import DocFileTable

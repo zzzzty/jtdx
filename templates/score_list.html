@@ -1,0 +1,47 @@
+{% extends 'teacherbase.html'%}
+
+{% block content %}
+<!-- {% for s in scores%}
+    {{ s }}</br>
+{% endfor %} -->
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <table class="table">
+                {% for student in students %}
+                <tr>
+                    <td>
+                        {{forloop.counter}}
+                    </td>
+                    <td>
+                        {{student.student}}
+                    </td>
+                    <td>
+                        {{student.task.semester}}
+                    </td>
+                    <td>
+                        {{student.task.course}}
+                    </td>
+                    <td>
+                        {{student.score}}
+                    </td>
+                    <td>
+                        {% if student.make_up == 1 %}
+                            期末
+                        {% elif student.make_up == 2 %}
+                            补考
+                        {% endif %}
+                    </td>
+                <!-- <button onchange="testajax(this);">button</button> -->
+                {% empty %}
+                <p>没有学生</p>
+                </tr>
+                {% endfor %}
+        </table>
+        
+    </div>
+
+    <div class="col-md-4 col-md-offset-1">
+
+    </div>
+</div>
+{% endblock %}
