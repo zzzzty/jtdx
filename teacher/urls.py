@@ -18,4 +18,5 @@ urlpatterns = [
     path('teacher_query_score/<int:classespk>',views.teacher_query_score,name='teacher_query_score'),
     path('teacher_query_score/student/<int:studentpk>',views.student_score,name='student_query_score'),
     path('filemaster/',views.filemaster,name="filemaster"),
+    path('printclassstudentscore/<int:classpk>',views.print_class_student_scores,name="printclassstudentscore"),
 ]

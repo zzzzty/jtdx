@@ -692,17 +692,38 @@ def student_score(request,studentpk):
     #所有该生成绩
     #students = Score.objects.filter(student_id=studentpk).order_by('task__semester','-task__course')
     scores = Score.objects.filter(student_id=studentpk).order_by('task__semester','-task__course'). \
-        values_list('task','student').annotate(Max("score"))
+        values_list('task','student').annotate(Max("score"))#task_id,student_id,socre这个是一个list
     #如果有重修等取最大成绩
     data = []
     for s in scores:
+        #task_id,student_id,socre这个是一个list
         score = Score.objects.get(task_id= s[0],score=s[2],student_id=s[1])
-        print(data)
+        #print(data)
         data.append(score)
     return render(request,'score_list.html',{'students':data,'scores':scores})
     #return render(request,'score_list.html',{'students':students,'scores':scores})
 
+@login_required(login_url="/teacher/")
+def print_class_student_scores(request,classpk):
+    #得到班级信息
+    classes = get_object_or_404(Classes,pk = classpk)
+    #得到学生信息
+    students = Student.objects.filter(classes = classes,student__is_active = True). \
+        order_by('student_num')
+    #构建成绩报表
+    class_score_dict = {}
 
+    #task_id,student_id,socre这个是一个list
+    for student in students:
+       
+        if student not in class_score_dict:
+            class_score_dict[student] = {"ss":"fff","tt":"ee"}
+        #task_id,student_id,socre这个是一个list
+        a_student_scores = Score.objects.filter(student=student).order_by('task__semester', \
+            '-task__course').values_list('task','student').annotate(Max("score"))
+         
+
+    return render(request,'print_scores_list.html',locals())
 
 from filemaster.models import DocFile
 from filemaster.tables import DocFileTable
