@@ -8,14 +8,29 @@ from django.contrib import auth
 from django.urls import reverse
 # Create your views here.
 def student_home(request):
-    if request.method == 'POST':
+    #print(request.user.teachers.is_teacher)
+    #print(request.method)
+    #print(request.user.username)
+    if request.method == 'GET':
+        teacherloginform = StudentLoginForm()
+        if request.user.username =="":
+            context={}
+            context['teacherloginform'] = teacherloginform
+            return render(request,'student/student_home.html',context)
+        else:
+            try:
+                User.objects.get(username = request.user).students.is_student
+                return render(request,'student/student_home.html',{})
+            except:
+                User.objects.get(username = request.user).teachers.is_teacher
+                return render(request,'teacher/teacher_home.html',{})
+    else:
         teacherloginform = StudentLoginForm(request.POST)
         if teacherloginform.is_valid():
             try:
                 username = teacherloginform.cleaned_data['username']+"_" \
                             +teacherloginform.cleaned_data['student_num']
-                User.objects.get(username = username).student.is_student
-                #auth.logout(request)
+                User.objects.get(username = username).students.is_student
                 user = teacherloginform.cleaned_data['user']
                 auth.login(request,user)
                 return render(request,'student/student_home.html',{})
@@ -25,8 +40,6 @@ def student_home(request):
                 context['teacherloginform'] = teacherloginform
                 return render(request,'student/student_home.html',context)
 
-    else:
-        teacherloginform = StudentLoginForm()
     context={}
     context['teacherloginform'] = teacherloginform
     return render(request,'student/student_home.html',context)

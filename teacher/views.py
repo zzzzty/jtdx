@@ -712,8 +712,6 @@ def print_class_student_scores(request,classpk):
         order_by('student_num')
     #构建成绩报表
     class_score_dict = {}
-
-
     for student in students:
         if student not in class_score_dict:
             class_score_dict[student] = {}
