@@ -4,21 +4,32 @@
 
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
-        <table class="table">
-
-                {% for i,j in class_score_dict.items %}
-                   {{ i }}
-                   {{ j }}
-                    </br>
-                        {% for m,n in j.items%}
-                            {{ m }},{{ n }}
-                            </br>
+                {% for student,semesters in class_score_dict.items %}
+                <div style="page-break-after: always;">
+                <table class="table table-bordered">
+                   <tr><th colspan="6"> {{ student }}</th></tr>
+                    {% for semester,stuff in semesters.items %}
+                    <tr>
+                       <td colspan="6"> {{ semester}}</td>
+                        {% for score in stuff.detail %}
+                            {% if forloop.counter0|divisibleby:3 %}
+                            </tr>
+                            <tr>
+                                <td>{{score.task.course}}</td> 
+                                <td>{{ score.score }}</td>
+                            {% else %}
+                                <td>{{score.task.course}}</td> 
+                                <td>{{ score.score }}</td>
+                            {% endif %}
                         {% endfor %}
+                    </tr>
+                    {% endfor %}
                 {% empty %}
                     <p>没有学生</p>
-                </tr>
+                </table>
+                </div>
                 {% endfor %}
-        </table>
+
         
     </div>
 

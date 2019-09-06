@@ -713,15 +713,34 @@ def print_class_student_scores(request,classpk):
     #构建成绩报表
     class_score_dict = {}
 
-    #task_id,student_id,socre这个是一个list
+
     for student in students:
-       
         if student not in class_score_dict:
-            class_score_dict[student] = {"ss":"fff","tt":"ee"}
-        #task_id,student_id,socre这个是一个list
+            class_score_dict[student] = {}
+        #task_id,student_id,socre这个是一个list[(),(),()]
         a_student_scores = Score.objects.filter(student=student).order_by('task__semester', \
-            '-task__course').values_list('task','student').annotate(Max("score"))
-         
+            '-task__course').values_list('task','id').annotate(Max("score"))
+        for ascore in a_student_scores:
+            taskpk = ascore[0]#max
+            task = TeachingTask.objects.get(pk = taskpk)
+            semester = task.semester
+            score = Score.objects.get(pk=ascore[1])
+            if semester not in class_score_dict[student]:
+                class_score_dict[student][semester] = {}
+                class_score_dict[student][semester]["count"] = 1
+                class_score_dict[student][semester]["detail"] = [score]
+            else:
+                class_score_dict[student][semester]["count"] += 1
+                class_score_dict[student][semester]["detail"].append(score)
+            #if taskpk not in class_score_dict[student]:
+            #    class_score_dict[student][taskpk] = {}
+    for student in class_score_dict:
+        print(student)
+        for semester in class_score_dict[student]:
+            detaillen =len(class_score_dict[student][semester]['detail'])
+            if detaillen<12:
+                for k in range(detaillen,12):
+                   class_score_dict[student][semester]['detail'].append("")
 
     return render(request,'print_scores_list.html',locals())
 
