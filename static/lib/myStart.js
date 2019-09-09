@@ -1,8 +1,8 @@
 $.fn.createMyStar = function(onimage,offimage){
     //alert($(this).attr("id"));
-    var ths_id = $(this).attr("id")
-    $(this).append('<div class="target-star"></div>');
-    $(this).find('.target-star').raty({
+    var ths_id = $(this).attr("id");//当前元素的id
+    $(this).append('<div class="target-star"></div>');//此元素添加控件
+    $(this).find('.target-star').raty({//在当前元素下 找到刚刚添加的元素
         //cancel:false,
         score:1,
         number:10,
