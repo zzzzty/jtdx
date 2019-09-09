@@ -1,31 +1,47 @@
-{% extends 'teacherbase.html' %}
+{% extends 'student/student_base.html' %}
 {% load staticfiles %}
 
 
 {% block header_extends %} 
-    <link rel="stylesheet" href = "{% static 'jquery.raty.css'%}">
+    <link rel="stylesheet" href = "{% static 'lib/jquery.raty.css'%}">
     <script type="text/javascript" src="{% static 'lib/jquery.raty.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/myStart.js' %}"></script>
 {% endblock %}
 
 
 {% block content %}
-    <div class="evaluate">
-        <div id="starts"></div>
-        <div id="title"></div>
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+    <p id = "showit" class="showit">选择的分数是多少</p>
+    <table class="table">
+        {% for i in i %}
+            <tr>
+                <td><p>{{ forloop.counter }}</p></td>
+                <td><div class="star" id="{{i}}"></div></td>
+                <td><p id="p_{{i}}">1分</p></td>
+            </tr>
+        {% endfor %}
+    </table>
     </div>
+</div>
+
 
 
 
     <script type="text/javascript">
-        $(function(){
-            $("#starts").raty({
-                number:5,
-                path:"{% static 'bin/images/' %}",
-                starOn:"{% static 'bin/images/star-on.png' %}",
-                starOff:"{% static 'bin/images/star-off.png' %}",
-                target:"#title",
-                hints:["1","2","3","4","5"],
+        var onimage ="{% static 'lib/images/star-on.png' %}";
+        var offimage = "{% static 'lib/images/star-off.png' %}";
+        //网页文件下载完成后进行js执行
+        $(document).ready(function(){
+            //找到class 为star 的标签，并且循环生成星星
+            $('.star').each(function(){
+                // var score_changepk = $(this).attr("id");
+                //alert(score_changepk);
+                //使用myStart.js文件中的createMyStar函数生成星星文件
+                $(this).createMyStar(onimage,offimage);
             });
         });
+
     </script>
+    
 {% endblock %}
