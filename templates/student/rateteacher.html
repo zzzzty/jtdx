@@ -12,16 +12,28 @@
 {% block content %}
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
+    <p>{{ semester }}</p>
+    <p>{{ teacher }}</p>
+    <p>{{ course }}</p>
     <p id = "showit" class="showit">选择的分数是多少</p>
-    <table class="table">
+    <form action="{% url 'insert_evaluation' %}" method="POST">
+    {% csrf_token %}
+        <table class="table">
         {% for i in i %}
             <tr>
-                <td><p>{{ forloop.counter }}</p></td>
-                <td><div class="star" id="{{i}}"></div></td>
-                <td><p id="p_{{i}}">1分</p></td>
+                <td><p>{{ forloop.counter }}{{i.name}}</p></td>
+                <td>{{i.content}}</td>
+                <td><div class="star" id="{{i.pk}}"></div></td>
+                <td><p id="p_{{i.pk}}">1分</p></td>
             </tr>
         {% endfor %}
     </table>
+    <input type="hidden" value="{{ semester }}" name="semester">
+    <input type="hidden" value="{{ teacher }}" name="teacher">
+    <input type="hidden" value="{{ course }}" name="course">
+    <button type="submit">goo</button>
+    </form>
+
     </div>
 </div>
 

@@ -1,0 +1,26 @@
+{% extends 'student/student_base.html' %}
+{% load staticfiles %}
+
+
+{% block header_extends %} 
+    <link rel="stylesheet" href = "{% static 'lib/jquery.raty.css'%}">
+    <script type="text/javascript" src="{% static 'lib/jquery.raty.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/myStart.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <table class="table">
+                {% for task in tasks %}
+                <tr>
+                <td>{{task.course}}</td>
+                <td><a href="{% url 'rate_teacher' task.teacher.pk task.course.pk%}">{{task.teacher}}</a></td>
+                {% empty %}
+                </tr>
+                {% endfor %}
+        </table>
+    </div>
+</div>    
+{% endblock %}
