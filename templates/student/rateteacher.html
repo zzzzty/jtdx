@@ -28,9 +28,9 @@
             </tr>
         {% endfor %}
     </table>
-    <input type="hidden" value="{{ semester }}" name="semester">
-    <input type="hidden" value="{{ teacher }}" name="teacher">
-    <input type="hidden" value="{{ course }}" name="course">
+    <input type="hidden" value="{{ semester.pk }}" name="semester">
+    <input type="hidden" value="{{ teacher.pk }}" name="teacher">
+    <input type="hidden" value="{{ course.pk }}" name="course">
     <button type="submit">goo</button>
     </form>
 

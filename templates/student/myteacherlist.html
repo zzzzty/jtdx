@@ -16,7 +16,13 @@
                 {% for task in tasks %}
                 <tr>
                 <td>{{task.course}}</td>
-                <td><a href="{% url 'rate_teacher' task.teacher.pk task.course.pk%}">{{task.teacher}}</a></td>
+                <td>
+                    {% if task.teacher.teacher.username not in teacher_is_evaluation %}
+                    <a href="{% url 'rate_teacher' task.teacher.pk task.course.pk%}">{{task.teacher}}</a>
+                    {% else %}
+                    {{ task.teacher.teacher.username}}
+                    {% endif %}
+                </td>
                 {% empty %}
                 </tr>
                 {% endfor %}

@@ -4,11 +4,13 @@ $.fn.createMyStar = function(onimage,offimage){
     $(this).append('<div class="target-star"></div>');//此元素添加控件
     $(this).find('.target-star').raty({//在当前元素下 找到刚刚添加的元素
         //cancel:false,
-        score:1,
+        score:5.5,
         number:10,
         scoreName:"score_"+ths_id,
         starOn:onimage,
         starOff:offimage,
+        half:true,
+        showHalf:true,
         hints:["1分","2分","3分","4分","5分","6分","7分","8分","9分","10分"],
         click:function(score){
             $("#showit").val(score);

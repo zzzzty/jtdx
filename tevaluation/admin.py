@@ -10,4 +10,4 @@ class TevaluationAdmin(admin.ModelAdmin):
 
 @admin.register(Evalution_score)
 class Evalution_scoreAdmin(admin.ModelAdmin):
-    list_display=('evalution','student','teacher','semester','score')
+    list_display=('evalution','student','teacher','semester','score','course')

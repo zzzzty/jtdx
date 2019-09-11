@@ -68,9 +68,9 @@ def rate_teacher(request,teacherpk,coursepk):
         classes = classes,semester=semester)
     context = {}
     context["i"] = evaluations#测评的项目
-    context["teacher"] = teacher.pk
-    context["course"] = task.pk
-    context["semester"] = semester.pk
+    context["teacher"] = teacher
+    context["course"] = task
+    context["semester"] = semester
     return render(request,'student/rateteacher.html',context)
 
 @login_required(login_url="/student/")
@@ -79,7 +79,20 @@ def my_teacher_list(request):
     student = Student.objects.get(student=user)
     semester = Semester.objects.get(is_execute=True)
     tasks = TeachingTask.objects.filter(semester=semester,classes=student.classes)
-    return render(request,'student/myteacherlist.html',{'tasks':tasks})
+
+    #教师是否被测评，构建字典存储,课程和教师为主键
+    teacher_is_evaluation = []
+    for task in tasks:
+        print(student,task.teacher,task.course,semester)
+        en = Evalution_score.objects.filter(student=student,teacher=task.teacher, \
+                    course=task.course,semester=semester).count()>0
+        if en:
+            teacher_is_evaluation.append(task.teacher.teacher.username)
+    context = {}
+    context['tasks'] = tasks
+    context['teacher_is_evaluation'] = teacher_is_evaluation
+    print(teacher_is_evaluation)
+    return render(request,'student/myteacherlist.html',context)
 
 @login_required(login_url="/student/")
 def insert_evaluation(request):
@@ -87,19 +100,40 @@ def insert_evaluation(request):
         semester_pk = request.POST.get("semester")
         teacher_pk = request.POST.get("teacher")
         task_pk = request.POST.get("course")
-        
+        #教师是否被测评，构建字典存储
+        teacher_is_evaluation = {}
         user = request.user
         student = Student.objects.get(student=user)
-
         print("+++++++++",student,semester_pk,teacher_pk,task_pk)
-
+        
         evaluations = Tevaluation.objects.all()
+
         for evaluation in evaluations:
             score = request.POST.get("score_"+str(evaluation.pk))
-            print(score)
-            new_evaluation_score = Evalution_score()
+            #tevaluation = get_object_or_404(Tevaluation,pk = evaluation.pk)
+            teacher = get_object_or_404(Teacher,pk = teacher_pk)
+            task = get_object_or_404(TeachingTask,pk = task_pk)
+            semester = Semester.objects.get(is_execute = True)
+
+            try:
+                Evalution_score.objects.get(student=student,teacher=teacher, \
+                    course=task.course,semester=semester,evalution=evaluation)
+                is_evaluation = True
+            except:
+                is_evaluation = False
+                new_evaluation_score = Evalution_score()
+                new_evaluation_score.student = student
+                new_evaluation_score.teacher = teacher
+                new_evaluation_score.course = task.course
+                new_evaluation_score.semester = semester
+                new_evaluation_score.score = score
+                new_evaluation_score.evalution = evaluation
+                new_evaluation_score.save()
+            print(evaluation.content,score,is_evaluation)
+            
+            
             #save the evaluations score
-        return HttpResponse("SSSSSSS")
+        return redirect(reverse('my_teacher'))
 
 
 
