@@ -1,0 +1,48 @@
+{% extends 'student/student_base.html' %}
+{% load staticfiles %}
+
+
+{% block header_extends %} 
+    <link rel="stylesheet" href = "{% static 'lib/jquery.raty.css'%}">
+    <script type="text/javascript" src="{% static 'lib/jquery.raty.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/myStart.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <table class="table">
+                {% for score in scores %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ score.task.semester }}</td>
+                        <td>{{ score.task.course }}</td>
+                        <td>{{ score.task.teacher }}</td>
+                        <td>
+                            {% if score.score == -1 %}
+                                未参加
+                            {% else %}
+                                {{ score.score}}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if score.make_up == 1 %}
+                                期末
+                            {% elif score.make_up == 2 %}
+                                补考
+                            {% elif score.make_up == 3 %}
+                                重修
+                            {% else %}
+                                清考
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                </tr>
+                {% endfor %}
+        </table>
+        <a href="?semester=all">{{classes}}全部的课程</a>
+    </div>
+</div>    
+{% endblock %}

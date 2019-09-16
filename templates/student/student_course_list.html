@@ -1,0 +1,31 @@
+{% extends 'student/student_base.html' %}
+{% load staticfiles %}
+
+
+{% block header_extends %} 
+    <link rel="stylesheet" href = "{% static 'lib/jquery.raty.css'%}">
+    <script type="text/javascript" src="{% static 'lib/jquery.raty.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/myStart.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <table class="table">
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ task.semester }}</td>
+                        <td>{{ task.course }}</td>
+                        <td>{{ task.teacher }}</td>
+                        <td>{{ task.teacher.belong_to}}</td>
+                    </tr>
+                {% empty %}
+                </tr>
+                {% endfor %}
+        </table>
+        <a href="?semester=all">{{classes}}全部的课程</a>
+    </div>
+</div>    
+{% endblock %}

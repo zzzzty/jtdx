@@ -3,6 +3,7 @@ from django.shortcuts import render,get_object_or_404,HttpResponse,redirect
 from .models import Student
 from teacher.models import Teacher
 from course.models import Course
+from score.models import Score
 from .forms import StudentLoginForm
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User
@@ -83,7 +84,7 @@ def my_teacher_list(request):
     #教师是否被测评，构建字典存储,课程和教师为主键
     teacher_is_evaluation = []
     for task in tasks:
-        print(student,task.teacher,task.course,semester)
+        #print(student,task.teacher,task.course,semester)
         en = Evalution_score.objects.filter(student=student,teacher=task.teacher, \
                     course=task.course,semester=semester).count()>0
         if en:
@@ -91,7 +92,7 @@ def my_teacher_list(request):
     context = {}
     context['tasks'] = tasks
     context['teacher_is_evaluation'] = teacher_is_evaluation
-    print(teacher_is_evaluation)
+    #print(teacher_is_evaluation)
     return render(request,'student/myteacherlist.html',context)
 
 @login_required(login_url="/student/")
@@ -140,4 +141,25 @@ def insert_evaluation(request):
 
 @login_required(login_url="/student/")
 def my_course(request):
-    return HttpResponse("my_course")
+    is_semester = request.GET.get('semester')
+    print(is_semester)
+    user = request.user
+    #
+    student = Student.objects.get(student=user)
+    classes = student.classes
+    semester = Semester.objects.get(is_execute = True)
+    if not is_semester:
+        tasks = TeachingTask.objects.filter(semester = semester,classes = student.classes).order_by('semester')
+    else:
+        tasks = TeachingTask.objects.filter(classes = student.classes).order_by('semester')
+    return render(request,'student/student_course_list.html',locals())
+
+
+@login_required(login_url="/student/")
+def my_scores(request):
+    user = request.user
+    #
+    student = Student.objects.get(student=user)
+    scores = Score.objects.filter(student=student).order_by('-pk','task__semester')
+
+    return render(request,'student/student_score_list.html',locals())
