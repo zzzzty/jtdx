@@ -212,13 +212,3 @@ for i in range(1,nrows):
             print("添加补考",str(i))
 #    print(student,student_num,grade,classes,major)
 '''
-
-    
-
-
-
-
-
-
-
-

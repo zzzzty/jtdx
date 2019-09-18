@@ -1,25 +1,58 @@
 {% extends 'teacherbase.html'%}
 
 {% block content %}
-
+<style>
+@media print {
+    table {page-break-after:always;}
+}
+td{
+        padding:0px!important;
+        align-self:"center"!important;
+    }
+th{
+    padding:10px!important;
+}
+</style>
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
                 {% for student,semesters in class_score_dict.items %}
-                <div style="page-break-after: always;">
                 <table class="table table-bordered">
-                   <tr><th colspan="6"> {{ student }}</th></tr>
+                   <tr><th colspan="8"> <h3  align="center">北京铁路电气化学校  {{ student.nick_name }}  同学 在校期间成绩{{student.student_num}}</h3></th></tr>
+                   <tr>
+                       <td align="center">课程</td>
+                       <td align="center">分数</td>
+                       <td align="center">课程</td>
+                       <td align="center">分数</td>
+                       <td align="center">课程</td>
+                       <td align="center">分数</td>
+                       <td align="center">课程</td>
+                       <td align="center">分数</td>
+                   </tr>
                     {% for semester,stuff in semesters.items %}
                     <tr>
-                       <td colspan="6"> {{ semester}}</td>
+                       <td colspan="8" align ="center"> {{ semester}}</td>
                         {% for score in stuff.detail %}
-                            {% if forloop.counter0|divisibleby:3 %}
+                            {% if forloop.counter0|divisibleby:4 %}
                             </tr>
                             <tr>
-                                <td>{{score.task.course}}</td> 
-                                <td>{{ score.score }}</td>
+                                <td align ="center">{{score.task.course}}</td> 
+                                <td align ="center">
+                                    {% if score.score != -1 %}
+                                    {{ score.score }}
+                                    {%else%}
+                                    未考
+                                    {% endif %}
+                                </td>
+                               
                             {% else %}
-                                <td>{{score.task.course}}</td> 
-                                <td>{{ score.score }}</td>
+                                <td align ="center">{{score.task.course}}</td> 
+                                <td align ="center">
+                                    {% if score.score != -1 %}
+                                    {{ score.score }}
+                                    {%else%}
+                                    未考
+                                    {% endif %}
+                                </td>
                             {% endif %}
                         {% endfor %}
                     </tr>
@@ -27,12 +60,7 @@
                 {% empty %}
                     <p>没有学生</p>
                 </table>
-                </div>
                 {% endfor %}
-    </div>
-
-    <div class="col-md-4 col-md-offset-1">
-
     </div>
 </div>
 {% endblock %}
