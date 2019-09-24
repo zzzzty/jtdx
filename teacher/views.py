@@ -40,7 +40,13 @@ def teacher_home(request):
                 context['teacherloginform'] = teacherloginform
                 return render(request,'teacher/teacher_home.html',context)
         else:
-            return HttpResponse("验证未能通过，这是个错误")
+            context = {}
+            teacherloginform = TeacherLoginForm()
+            context['message'] = '验证码错误'
+            #setFormTips(teacherloginform,"验证错误")
+            context['teacherloginform'] = teacherloginform
+            
+            return render(request,'teacher/teacher_home.html',context)
     else:
         if len(request.user.username)<1:
             context = {}

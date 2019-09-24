@@ -26,6 +26,10 @@ class TeacherLoginForm(forms.Form):
             raise forms.ValidationError('用户名密码不对')
         else:
             self.cleaned_data['user'] = user
+        try:
+            captcha_x = self.cleaned_data['captcha']
+        except:
+            raise forms.ValidationError('验证码错误')
         return self.cleaned_data
 
 class RegTeacherForm(forms.Form):

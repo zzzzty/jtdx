@@ -10,7 +10,7 @@ from classes.models import Classes
 class Student(models.Model):
     student = models.OneToOneField(User,on_delete=models.CASCADE,related_name = "students")
     is_student = models.BooleanField(default = True)
-    student_num = models.CharField(unique=True,max_length=12)
+    student_num = models.CharField(unique=True,max_length=20)
     classes = models.ForeignKey(Classes,on_delete=models.DO_NOTHING,null=True)
     nick_name = models.CharField(max_length=12,null=True,blank = True)
     def __str__(self):
