@@ -23,6 +23,7 @@ urlpatterns = [
     path('major/',include('major.urls')),
     path('teacher/',include('teacher.urls')),
     path('student/',include('student.urls')),
+    path('captcha',include('captcha.urls')),
 ]
 #设置多媒体上传路径
 from django.conf.urls.static import static

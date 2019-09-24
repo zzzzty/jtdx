@@ -6,6 +6,7 @@ from attendance.models import Attendance
 from django.contrib.auth.hashers import make_password,check_password
 from django.contrib import auth
 from django.contrib.auth.models import User
+from captcha.fields import CaptchaField
 
 from django.contrib.admin import widgets
 from datetimepicker.widgets import DateTimePicker
@@ -15,6 +16,7 @@ class TeacherLoginForm(forms.Form):
         ,required=True,widget=forms.TextInput(attrs={'class':'form-control'}))
     password = forms.CharField(label='密码' \
         ,widget=forms.PasswordInput(attrs={'class':'form-control'}))
+    captcha = CaptchaField(label='验证码')
 
     def clean(self):
         username = self.cleaned_data['username']
