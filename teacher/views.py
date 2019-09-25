@@ -27,12 +27,14 @@ def teacher_home(request):
                 User.objects.get(username = teacherloginform.cleaned_data['username']). \
                                             teachers.is_teacher
                 user = teacherloginform.cleaned_data['user']
-                print(user)
+                #print(user)
                 auth.login(request,user)
-                return render(request,'teacher/teacher_home.html',{'group_master': \
-                    User.objects.get(username = teacherloginform.cleaned_data['username']). \
-                                            teachers.is_group_master
-                    })
+                context = {}
+                context['group_master'] = User.objects.get(username = teacherloginform. \
+                    cleaned_data['username']).teachers.is_group_master
+                teacher = Teacher.objects.filter(teacher__username=user)[0]
+                context['classesmaster'] = Classes.objects.filter(teacher=teacher).count()
+                return render(request,'teacher/teacher_home.html',context)
             except:
                 context = {}
                 context['message'] = '_____不是______'
@@ -45,7 +47,6 @@ def teacher_home(request):
             context['message'] = '验证码错误'
             #setFormTips(teacherloginform,"验证错误")
             context['teacherloginform'] = teacherloginform
-            
             return render(request,'teacher/teacher_home.html',context)
     else:
         if len(request.user.username)<1:
@@ -432,6 +433,7 @@ def select_teacher(request):
     #teacher_info
     teacher = Teacher.objects.get(teacher = user)
     group_master = teacher.is_group_master
+    classesmaster = Classes.objects.filter(teacher=teacher).count()
     #学年学期
     semester = Semester.objects.get(is_execute = True)
 
@@ -473,9 +475,7 @@ def select_teacher(request):
         #ttt = TeachingTask.objects.filter()
         development_teachers = Teacher.objects. \
             filter(belong_to = teacher.belong_to).values_list('pk','teacher__username')
-
         #print("heheh",(development_teachers))
-
         data = []
         for t in task:
             if t.course in courses:
@@ -492,6 +492,7 @@ def select_teacher(request):
         # context['tasks'] = tasks
         #print(task.count)
         context['group_master'] = group_master
+        context['classesmaster'] = classesmaster
         #newformset = newformset(form_kwargs={'belong':teacher.belong_to})
         context['iscore'] = newformset(initial = data)
         context['belong'] = teacher.belong_to.pk
@@ -683,7 +684,7 @@ def myclasses(request):
     classesmaster = Classes.objects.filter(teacher = teacher).count()
     context['classesmaster'] = classesmaster
     context['students']=students
-
+    context['group_master'] = teacher.is_group_master
     return render(request,'teacher/myclasses.html',context)
 
 @login_required(login_url="/teacher/")
@@ -758,4 +759,3 @@ def filemaster(request):
     context['files'] = table
     return render(request,'teacher/filemaster.html',context)
     
-

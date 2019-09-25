@@ -161,5 +161,5 @@ def my_scores(request):
     #
     student = Student.objects.get(student=user)
     scores = Score.objects.filter(student=student).order_by('-pk','task__semester')
-
+    
     return render(request,'student/student_score_list.html',locals())

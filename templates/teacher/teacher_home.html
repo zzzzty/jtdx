@@ -20,7 +20,7 @@
                 <p class="text-danger">{{ field.errors.as_text }}</p>
                 {% endfor %}
                 <span class="pull-left text-danger">{{ teacherloginform.non_field_errors}}</span>
-                <input type="submit" class = "btn btn-primary btn-sm pull-right" value="goo">
+                <input type="submit" class = "btn btn-primary btn-sm pull-right" value="开始">
                 <a href="{% url 'student_home' %}" class="btn btn-primary btn-sm pull-left">学生入口</a>
                 </form>
             </div>
@@ -32,5 +32,7 @@
     {% endif %}
     </form>
 </div>
-
+<script type="text/javascript">
+$("#id_captcha_1").addClass("form-control");
+</script>
 {% endblock %}
