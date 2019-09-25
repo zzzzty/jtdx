@@ -5,7 +5,7 @@ from teacher.models import Teacher
 from course.models import Course
 from score.models import Score
 from .forms import StudentLoginForm
-from django.contrib.auth.hashers import check_password
+from django.contrib.auth.hashers import check_password,make_password
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.urls import reverse
