@@ -564,9 +564,10 @@ def input_score(request,coursepk,semesterpk,make):
     teacher = Teacher.objects.get(teacher = user)
     course = get_object_or_404(Course,pk=coursepk)
     semester = get_object_or_404(Semester,pk=semesterpk)
+    execute_semester = Semester.objects.get(is_execute=True)
     make_up = make
     data = input_score_formsetdata(course=course,semester=semester, \
-        execute_semester=semester,teacher=teacher,make=make)
+        execute_semester=execute_semester,teacher=teacher,make=make)
     context = {}
     context['task'] = course
     #context['taskpk'] = taskpk
@@ -625,7 +626,7 @@ def input_score_formsetdata(course,semester,execute_semester,teacher,make):
     data = []
      #进行查询那些成绩是需要录入的,以下查询限定了某学期的某中课程
     tasks = MakeUpTask.objects.filter(course=course,semester = semester, \
-                execute_semester = semester,teacher = teacher, \
+                execute_semester = execute_semester,teacher = teacher, \
                 make_up=make,is_input=False).order_by('student__classes','-student__student_num')
     for s in tasks:
         hiddenelement = Score.objects.get(student = s.student,task__course=s.course, \
