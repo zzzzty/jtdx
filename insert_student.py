@@ -33,4 +33,51 @@ for i in range(1,nrows):
     classes = get_value(data,i,4)
     grade = get_value(data,i,34)
 
-    print(grade)
+    #年级
+    from grade.models import Grade
+    try:
+        grade = Grade.objects.get(name=grade)
+    except:
+        newgrade = Grade()
+        newgrade.name = grade
+        newgrade.save()
+        grade = newgrade
+    
+    from classes.models import Classes
+    try:
+        classes = Classes.objects.get(name = classes)
+    except:
+        newclasses = Classes()
+        newclasses.name = classes
+        from teacher.models import Teacher
+        teacher = Teacher.objects.first()
+        from major.models import Major
+        major = Major.objects.first()
+        newclasses.teacher = teacher
+        newclasses.major = major
+        newclasses.save()
+        classes = newclasses
+        #continue
+
+    from student.models import Student
+    try:
+        student = User.objects.get(username = name+"_"+num )
+        try:
+            student = Student.objects.get(student = student)
+        except:
+            newstudent = Student()
+            newstudent.student_num = num
+            newstudent.student = student
+            newstudent.classes = classes
+            newstudent.save()
+            student = newstudent
+    except:
+        a = User.objects.create_user(name+"_"+num,"test@jtdx.com",num)
+        newstudent = Student()
+        newstudent.student_num =num
+        newstudent.student = a
+        newstudent.classes = classes
+        newstudent.nick_name = name
+        newstudent.save()
+        student = newstudent
+
