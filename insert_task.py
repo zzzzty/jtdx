@@ -55,8 +55,12 @@ for i in range(1,nrows):
     try:
         classes = Classes.objects.get(name = classes)
     except:
-        print("+++++++++++------we dont find this %r"%classes)
-        continue
+        print("+++++++++++------we dont find this %r"%classes,end="||")
+        newclass = Classes()
+        newclass.name = classes
+        newclass.save()
+        #continue
+        classes = newclass
     #teacher
     try:
         teacher = User.objects.get(username = teacher )
@@ -74,7 +78,7 @@ for i in range(1,nrows):
         newteacher.is_teacher = True
         newteacher.save()
         teacher = newteacher
-        print("we have save a new user %r"%teacher)
+        print("we have save a new user %r"%teacher,end="||")
 
     from course.models import Course 
     try:
