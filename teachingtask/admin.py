@@ -6,7 +6,8 @@ from .models import TeachingTask,Semester
 @admin.register(TeachingTask)
 class TeachingTaskAdmin(admin.ModelAdmin):
     list_display = ['semester','teacher','course','classes','is_changed','create_time']
-    search_fields = ['classes__name','teacher__teacher__username',]
+    search_fields = ['classes__name','teacher__teacher__username','classes__major__grade']
+    ordering = ['-semester','classes__major__grade']
 
 @admin.register(Semester)
 class SemesterAdmin(admin.ModelAdmin):

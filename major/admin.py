@@ -5,3 +5,4 @@ from .models import Major
 class MajorAdmin(admin.ModelAdmin):
     list_display=('name','grade','create_time','last_updated_time')
     search_fields = ['name']
+    ordering = ['create_time',]
