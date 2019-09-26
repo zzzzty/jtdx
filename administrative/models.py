@@ -13,10 +13,13 @@ class Administrative(models.Model):
 
 
 class TeacherDevelopment(models.Model):
-    name = models.CharField(max_length=20)
-    create_time = models.DateTimeField(auto_now_add=True)
-    administrative = models.ForeignKey(Administrative,on_delete=models.DO_NOTHING)
+    name = models.CharField(max_length=20,verbose_name="教研室名称")
+    create_time = models.DateTimeField(auto_now_add=True,verbose_name="创建时间")
+    administrative = models.ForeignKey(Administrative,on_delete=models.DO_NOTHING,verbose_name="教研室")
     def __str__(self):
         return "%s %s"%(self.administrative.name,self.name)
+    class Meta:
+        verbose_name = '教研室'
+        verbose_name_plural = '教研室'
 
 

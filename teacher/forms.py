@@ -91,7 +91,7 @@ class AttendanceForm(forms.Form):
     ]
     student = forms.ModelChoiceField(queryset=None, \
         widget=forms.Select(attrs={'class':'form-control','multiple':'multiple', \
-            'placeholder':'选择时间','size':'15'}))
+            'placeholder':'选择时间','size':'10'}))
     attendance_time = forms.CharField(label='考勤日期' \
         ,required=True,widget=forms.TextInput(attrs={'class':'form-control','placeholder':'选择时间'}))
     select_detail = forms.ChoiceField(choices = choices)
