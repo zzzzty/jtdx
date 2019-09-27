@@ -12,3 +12,7 @@ def home(request):
 def logout(request):
     auth.logout(request)
     return redirect('/')
+
+def search(request):
+    tst = request.GET.get('teachersearchtask',None)
+    return HttpResponse(tst)

@@ -103,6 +103,9 @@ from django.contrib.auth.decorators import login_required,permission_required
 #教师教学任务
 @login_required(login_url="/teacher/")
 def teacher_task(request):
+    #添加搜索功能
+    tst = request.GET.get("teachersearchtask","")
+    tsc = request.GET.get("tsearch","")
     #正常的教学任务
     name = request.user.username
     user = User.objects.get(username = name)
@@ -110,9 +113,8 @@ def teacher_task(request):
     teacher = Teacher.objects.get(teacher = user)
     #得到当前学年学期
     semester = Semester.objects.get(is_execute = True)
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    teachingtasks = TeachingTask.objects.filter(teacher=teacher,semester=semester)
+    teachingtasks = TeachingTask.objects.filter(teacher=teacher,semester=semester, \
+        classes__name__contains=tst,course__name__contains=tsc)
     context = {}
     context['group_master'] = teacher.is_group_master
     #判断该教师是否为班主任
@@ -123,7 +125,7 @@ def teacher_task(request):
     #重修的教学任务
     #需要更多的条件,execute_semester=semester
     scores = MakeUpTask.objects.filter(teacher=teacher, \
-        execute_semester=semester,is_input = False) \
+        execute_semester=semester,is_input = False,course__name__contains=tsc) \
         .values_list('course','semester','make_up')
     #print(scores)
     final_coures ={}
@@ -744,8 +746,8 @@ def print_class_student_scores(request,classpk):
         print(student)
         for semester in class_score_dict[student]:
             detaillen =len(class_score_dict[student][semester]['detail'])
-            if detaillen<12:
-                for k in range(detaillen,12):
+            if detaillen<16:
+                for k in range(detaillen,16):
                    class_score_dict[student][semester]['detail'].append("")
 
     return render(request,'print_scores_list.html',locals())
