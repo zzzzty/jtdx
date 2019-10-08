@@ -693,7 +693,12 @@ def myclasses(request):
 @login_required(login_url="/teacher/")
 def teacher_query_score(request,classespk):
     #使用用户模型的中的isactive进行用户是否有效进行判断
-    students = Student.objects.filter(classes_id = classespk,student__is_active = True).order_by('student_num')
+    tsc = request.GET.get("tsearch","")
+    if tsc == "":
+        students = Student.objects.filter(classes_id = classespk, \
+        student__is_active = True).order_by('student_num')
+    else :
+        students = Student.objects.filter(student__username__contains=tsc)
     return render(request,'namelist.html',{'students':students})
 
 from django.db.models import Max,Avg

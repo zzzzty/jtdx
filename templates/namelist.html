@@ -2,9 +2,21 @@
 
 {% block content %}
 <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <form action="" method="get" class="form-inline">
+            <!-- <input type="text" name="teachersearchtask" id="search" class="form-control" placeholder="班级信息"> -->
+            <input type="text" name="tsearch" id="tsearch" class="form-control" placeholder="学生信息">
+            <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+        </form>
+    </div>
+</div>
+
+<div class="row">
     <div class="col-md-4 col-md-offset-1">
         {% for student in students %}
-            {{student.student}}<a href="{% url 'student_query_score' student.pk %}" class="">详情</a>
+            {{student.student_num}}
+            {{student.nick_name}}
+            <a href="{% url 'student_query_score' student.pk %}" class="">详情</a>
             <!-- <button onchange="testajax(this);">button</button> -->
             </br>
         {% empty%}
