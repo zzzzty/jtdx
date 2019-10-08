@@ -693,18 +693,38 @@ def myclasses(request):
 @login_required(login_url="/teacher/")
 def teacher_query_score(request,classespk):
     #使用用户模型的中的isactive进行用户是否有效进行判断
+    context = {}
+    name = request.user.username
+    user = User.objects.get(username = name)
+    #如果是个学生如何 使用try 方法解决
+    teacher = Teacher.objects.get(teacher = user)
+    context['group_master'] = teacher.is_group_master
+    #判断该教师是否为班主任
+    classesmaster = Classes.objects.filter(teacher = teacher).count()
+    context['classesmaster'] = classesmaster
+
     tsc = request.GET.get("tsearch","")
     if tsc == "":
         students = Student.objects.filter(classes_id = classespk, \
         student__is_active = True).order_by('student_num')
     else :
         students = Student.objects.filter(student__username__contains=tsc)
-    return render(request,'namelist.html',{'students':students})
+    context['students'] = students
+    return render(request,'namelist.html',context)
 
 from django.db.models import Max,Avg
 @login_required(login_url="/teacher/")
 def student_score(request,studentpk):
     #所有该生成绩
+    context = {}
+    name = request.user.username
+    user = User.objects.get(username = name)
+    #如果是个学生如何 使用try 方法解决
+    teacher = Teacher.objects.get(teacher = user)
+    context['group_master'] = teacher.is_group_master
+    #判断该教师是否为班主任
+    classesmaster = Classes.objects.filter(teacher = teacher).count()
+    context['classesmaster'] = classesmaster
     #students = Score.objects.filter(student_id=studentpk).order_by('task__semester','-task__course')
     scores = Score.objects.filter(student_id=studentpk).order_by('task__semester','-task__course'). \
         values_list('task','student').annotate(Max("score"))#task_id,student_id,socre这个是一个list
@@ -715,7 +735,9 @@ def student_score(request,studentpk):
         score = Score.objects.get(task_id= s[0],score=s[2],student_id=s[1])
         #print(data)
         data.append(score)
-    return render(request,'score_list.html',{'students':data,'scores':scores})
+    context['students'] = data
+    context['scores'] = scores
+    return render(request,'score_list.html',context)
     #return render(request,'score_list.html',{'students':students,'scores':scores})
 
 @login_required(login_url="/teacher/")
