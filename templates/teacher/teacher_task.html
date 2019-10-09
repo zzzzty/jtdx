@@ -6,15 +6,22 @@
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
         <form action="" method="get" class="form-inline">
-            <input type="text" name="teachersearchtask" id="search" class="form-control" placeholder="班级信息">
-            <input type="text" name="tsearch" id="tsearch" class="form-control" placeholder="课程信息">
+            <label for="search">班级信息</label>
+            <input type="text" name="teachersearchtask" id="search" class="form-control" placeholder="{{ tst }}"">
+            <label for="tsearch">课程信息</label>
+            <input type="text" name="tsearch" id="tsearch" class="form-control" placeholder="{{ tsc }}">
+            <select id="semester" name="semester"  class="form-control">
+                {% for semester in semesters %}
+                    <option value={{semester.pk}}>{{ semester }}</option>
+                {% endfor %}
+            </select>
             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
         </form>
     </div>
 </div>
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
-    <a href="{% url 'teacher_task' %}?semester_from_page = semester">选择学年学期semester</a>
+    <!-- <a href="{% url 'teacher_task' %}?semester=2">选择学年学期semester</a> -->
         <!-- <h2>本学期教学任务</h2> -->
         <table class="table table-striped">
         <!-- <tr colspan="7">SSSSSSSSSSSSS</tr> -->

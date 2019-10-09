@@ -9,7 +9,7 @@ from teacher.models import Teacher
 class Score(models.Model):
     task =  models.ForeignKey(TeachingTask,on_delete=models.DO_NOTHING,related_name="task")
     student = models.ForeignKey(Student,on_delete=models.DO_NOTHING)
-    score = models.IntegerField(default=0)
+    score = models.IntegerField(default="",null=True)
     create_time = models.DateTimeField(auto_now_add=True)
     is_changed = models.BooleanField(default=False)
     #默认值为task的任课教师，但是task可能后期更改，为了准确使用score_input_teacher进行记录

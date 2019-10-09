@@ -112,8 +112,11 @@ def teacher_task(request):
     #如果是个学生如何 使用try 方法解决
     teacher = Teacher.objects.get(teacher = user)
     #得到当前学年学期
-    semester = Semester.objects.get(is_execute = True)
-    teachingtasks = TeachingTask.objects.filter(teacher=teacher,semester=semester, \
+    semester = request.GET.get("semester",Semester.objects.get(is_execute = True).pk)
+    
+    #print(semester)
+    
+    teachingtasks = TeachingTask.objects.filter(teacher=teacher,semester_id=semester, \
         classes__name__contains=tst,course__name__contains=tsc)
     context = {}
     context['group_master'] = teacher.is_group_master
@@ -164,8 +167,12 @@ def teacher_task(request):
     context['chongxiu'] = chongxiu
     context['biyeqian'] = biyeqian
     context['scores'] = final_coures
+    context['semesters'] = Semester.objects.all().order_by('-is_execute','-semester_year','semester_period')[:10]
+    context['tst'] = tst
+    context['tsc'] = tsc
     #print(final_coures)
     return render(request,'teacher/teacher_task.html',context)
+    #return redirect(reverse('teacher_task'))
 
 from score.forms import IScore
 from student.models import Student
@@ -249,11 +256,13 @@ def teacher_insert_score(request):
             name = request.user.username
             user = User.objects.get(username = name)#如果是个学生如何
             teacher = Teacher.objects.get(teacher = user)
-            teachingtasks = TeachingTask.objects.filter(teacher=teacher)
+            semester = Semester.objects.get(is_execute = True)
+            teachingtasks = TeachingTask.objects.filter(teacher=teacher,semester=semester)
             context = {}
             context['name'] = name
             context['teachingtasks'] = teachingtasks
             context['iscore'] = newformset(initial = data)
+            #PPPP
             return render(request,'teacher/teacher_task.html',context)
             #return render(request,'teacher/teacher_score.html',context)
         else:
