@@ -11,7 +11,8 @@ from django.contrib import auth
 from django.urls import reverse
 from teachingtask.models import TeachingTask,Semester
 from django.contrib.auth.decorators import login_required,permission_required
-from tevaluation.models import Tevaluation,Evalution_score
+from tevaluation.models import Tevaluation,Evalution_score,Comment
+from tevaluation.forms import CommentForm
 # Create your views here.
 def student_home(request):
     if request.method == 'GET':
@@ -68,6 +69,12 @@ def rate_teacher(request,teacherpk,coursepk):
     task = get_object_or_404(TeachingTask,teacher=teacher,course=course, \
         classes = classes,semester=semester)
     context = {}
+    data = {}
+
+    data['teacher_id'] = teacherpk
+    data['course_id'] = coursepk
+    #print(data)
+    context['comment_form'] = CommentForm(initial=data)
     context["i"] = evaluations#测评的项目
     context["teacher"] = teacher
     context["course"] = task
@@ -105,36 +112,64 @@ def insert_evaluation(request):
         teacher_is_evaluation = {}
         user = request.user
         student = Student.objects.get(student=user)
-        print("+++++++++",student,semester_pk,teacher_pk,task_pk)
-        
-        evaluations = Tevaluation.objects.all()
+        print("+++++++++",student,semester_pk,teacher_pk,task_pk,"________")
 
-        for evaluation in evaluations:
-            score = request.POST.get("score_"+str(evaluation.pk))
-            #tevaluation = get_object_or_404(Tevaluation,pk = evaluation.pk)
+        evaluations = Tevaluation.objects.all()
+        comment_form = CommentForm(request.POST,user=request.user)
+        if comment_form.is_valid():
+            print(comment_form.cleaned_data)
             teacher = get_object_or_404(Teacher,pk = teacher_pk)
             task = get_object_or_404(TeachingTask,pk = task_pk)
             semester = Semester.objects.get(is_execute = True)
 
-            try:
-                Evalution_score.objects.get(student=student,teacher=teacher, \
-                    course=task.course,semester=semester,evalution=evaluation)
-                is_evaluation = True
-            except:
-                is_evaluation = False
-                new_evaluation_score = Evalution_score()
-                new_evaluation_score.student = student
-                new_evaluation_score.teacher = teacher
-                new_evaluation_score.course = task.course
-                new_evaluation_score.semester = semester
-                new_evaluation_score.score = score
-                new_evaluation_score.evalution = evaluation
-                new_evaluation_score.save()
-            print(evaluation.content,score,is_evaluation)
-            
-            
-            #save the evaluations score
-        return redirect(reverse('my_teacher'))
+            newcomment = Comment()
+            newcomment.teacher = teacher
+            newcomment.student = student
+            newcomment.course = task.course
+            newcomment.text = comment_form.cleaned_data['text']
+            newcomment.semester = semester
+            newcomment.save()
+
+            for evaluation in evaluations:
+                score = request.POST.get("score_"+str(evaluation.pk))
+                #tevaluation = get_object_or_404(Tevaluation,pk = evaluation.pk)
+                try:
+                    Evalution_score.objects.get(student=student,teacher=teacher, \
+                        course=task.course,semester=semester,evalution=evaluation)
+                    is_evaluation = True
+                except:
+                    is_evaluation = False
+                    new_evaluation_score = Evalution_score()
+                    new_evaluation_score.student = student
+                    new_evaluation_score.teacher = teacher
+                    new_evaluation_score.course = task.course
+                    new_evaluation_score.semester = semester
+                    new_evaluation_score.score = score
+                    new_evaluation_score.evalution = evaluation
+                    new_evaluation_score.save()
+                print(evaluation.content,score,is_evaluation)
+                #save the evaluations score
+
+            return redirect(reverse('my_teacher'))
+        else:
+            evaluations = Tevaluation.objects.all() 
+            teacher = get_object_or_404(Teacher,pk = teacher_pk)
+            #course = get_object_or_404(Course,pk = course_pk)
+            user = request.user
+            classes = Student.objects.get(student=user).classes
+            semester = Semester.objects.get(is_execute = True)
+            #判断这个班级是否有这个课程
+            task = get_object_or_404(TeachingTask,pk=task_pk)
+            course = task.course.pk
+            context = {}
+            context['comment_form'] = comment_form
+            context["i"] = evaluations#测评的项目
+            context["teacher"] = teacher
+            context["course"] = task
+            context["semester"] = semester
+            return render(request,'student/rateteacher.html',context)
+
+        
 
 
 

@@ -41,7 +41,7 @@ class TeachingTask(models.Model):
     is_changed = models.BooleanField(default=False)
     
     def __str__(self):
-        return "%s %s %s"%(self.semester,self.course,self.classes) 
+        return "%s %s %s %s"%(self.semester,self.course,self.classes,self.teacher) 
     class Meta:
         unique_together = ['semester','course','classes']
         verbose_name = '教学任务'

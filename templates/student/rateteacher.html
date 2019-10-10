@@ -6,6 +6,8 @@
     <link rel="stylesheet" href = "{% static 'lib/jquery.raty.css'%}">
     <script type="text/javascript" src="{% static 'lib/jquery.raty.js' %}"></script>
     <script type="text/javascript" src="{% static 'lib/myStart.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
 {% endblock %}
 
 
@@ -28,9 +30,14 @@
             </tr>
         {% endfor %}
     </table>
+    {% for field in comment_form %}
+    {{ field }}
+    {% endfor %}
+    
     <input type="hidden" value="{{ semester.pk }}" name="semester">
     <input type="hidden" value="{{ teacher.pk }}" name="teacher">
     <input type="hidden" value="{{ course.pk }}" name="course">
+
     <button type="submit">goo</button>
     </form>
 
