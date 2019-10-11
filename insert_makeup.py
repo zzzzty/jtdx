@@ -42,7 +42,7 @@ for i in range(1,nrows):
     student_name = get_value(data,i,1) 
     student_ = student_name+"_"+student_num
     
-    make_up = 2
+    make_up = 3
     is_input = False
 
     semester = Semester.objects.get(semester_year=year,semester_period=period)
@@ -51,9 +51,12 @@ for i in range(1,nrows):
     student = Student.objects.get(student__username=student_)
     course = Course.objects.get(name = course)
     try:
-        MakeUpTask.objects.get(semester=semester,execute_semester=execute_semester, \
+        newmakeup = MakeUpTask.objects.get(semester=semester,execute_semester=execute_semester, \
             make_up=make_up,student=student,course=course)
         print("have it")
+        newmakeup.teacher = teacher
+        newmakeup.make_up = make_up
+        newmakeup.save()
     except:
         newmakeup = MakeUpTask()
         newmakeup.semester=semester
