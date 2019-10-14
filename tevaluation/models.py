@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Tevaluation(models.Model):
     name = models.CharField('名称',max_length=20)
-    content = models.CharField('简介',max_length=20)
+    content = models.CharField('简介',max_length=200)
     def __str__(self):
         return self.name
 

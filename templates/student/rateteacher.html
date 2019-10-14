@@ -23,10 +23,10 @@
         <table class="table">
         {% for i in i %}
             <tr>
-                <td><p>{{ forloop.counter }}{{i.name}}</p></td>
-                <td>{{i.content}}</td>
-                <td><div class="star" id="{{i.pk}}"></div></td>
-                <td><p id="p_{{i.pk}}">6分</p></td>
+                <td width=100px><p>{{ forloop.counter }}{{i.name}}</p></td>
+                <td>{{i.content|linebreaksbr}}</td>
+                <td width=220px><div class="star" id="{{i.pk}}"></div></td>
+                <td width=50px><p id="p_{{i.pk}}">6分</p></td>
             </tr>
         {% endfor %}
     </table>
