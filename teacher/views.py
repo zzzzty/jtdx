@@ -15,6 +15,7 @@ from student.forms import StudentLoginForm
 from django.http import JsonResponse
 from django.db.models.aggregates import Count
 from course.models import Course
+from jtdx.utils import save_plt_image
 from make_up.models import MakeUpTask
 # Create your views here.
 #教师登陆主页
@@ -114,6 +115,7 @@ def teacher_task(request):
     #得到当前学年学期
     semester = request.GET.get("semester",Semester.objects.get(is_execute = True).pk)
     
+    save_plt_image(teacher,semester)
     #print(semester)
     
     teachingtasks = TeachingTask.objects.filter(teacher=teacher,semester_id=semester, \
@@ -798,3 +800,17 @@ def filemaster(request):
     context['files'] = table
     return render(request,'teacher/filemaster.html',context)
     
+
+def my_evalution(request):
+    context = {}
+    name = request.user.username
+    user = User.objects.get(username = name)
+    #如果是个学生如何 使用try 方法解决
+    teacher = Teacher.objects.get(teacher = user)
+    #得到当前学年学期
+    semester = request.GET.get("semester",Semester.objects.get(is_execute = True).pk)
+    save_plt_image(teacher,semester)
+    context['image_path'] = "/static/wordcloud/cloud/"+teacher.teacher.username + "-" +str(semester)+".png"
+    context['teacher'] = teacher
+    context['semesterpk'] = semester
+    return render(request,'teacher/my_evalution.html',context)

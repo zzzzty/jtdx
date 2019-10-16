@@ -34,6 +34,9 @@
                                 <a href="{% url 'myclasses' %}" class="">班主任</a>
                             </li>
                             {% endif %}
+                            <li class="{% block nav_tecalution_active %} {% endblock %}">
+                                <a href="{% url 'my_evalution' %}" class="">测评结果</a>
+                            </li>
                             <!-- <li class="{% block nav_teacher_active %} {% endblock %}">
                                 <a href="" class="">教师管理</a>
                             </li>
