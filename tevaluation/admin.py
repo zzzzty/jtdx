@@ -4,7 +4,7 @@ from .models import Tevaluation,Evalution_score,Comment
 
 @admin.register(Tevaluation)
 class TevaluationAdmin(admin.ModelAdmin):
-    list_display=('name',)
+    list_display=('name','weights')
     search_fields=('id','name')
 
 

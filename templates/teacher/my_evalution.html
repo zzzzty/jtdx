@@ -7,4 +7,33 @@
     <div class="col-md-10 col-md-offset-1">
        <img src="{{ image_path }}" alt="{{ teacher }}" class="img-rounded">
 </div>
+
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <p align="center">我的最终分{{totalscore}}(总分计算方法：项目平均分*项目权重)</p>
+        <table class="table">
+                <th>
+                    <td>测评项目名称</td>
+                    <td>最高分</td>
+                    <td>最低分</td>
+                    <td>平均分</td>
+                    <td>权重</td>
+                </th>
+        {% for a,b in evalution_score_list.items %}
+            <tr>
+            <td></td>
+            <td>{{ a.name }}</td>
+            
+            {% for d in b.values %}
+               <td> {{ d }}</td>
+            {% empty %}
+            {% endfor %}
+            <td>{{ a.weights }}</td>
+        {% empty %}
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+
+</div>
 {% endblock %}

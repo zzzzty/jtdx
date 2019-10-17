@@ -14,9 +14,11 @@ from django.contrib.auth import authenticate
 from student.forms import StudentLoginForm
 from django.http import JsonResponse
 from django.db.models.aggregates import Count
+from django.db.models import Max,Avg,Min
 from course.models import Course
 from jtdx.utils import save_plt_image
 from make_up.models import MakeUpTask
+from tevaluation.models import Evalution_score,Tevaluation
 # Create your views here.
 #教师登陆主页
 def teacher_home(request):
@@ -115,7 +117,6 @@ def teacher_task(request):
     #得到当前学年学期
     semester = request.GET.get("semester",Semester.objects.get(is_execute = True).pk)
     
-    save_plt_image(teacher,semester)
     #print(semester)
     
     teachingtasks = TeachingTask.objects.filter(teacher=teacher,semester_id=semester, \
@@ -723,7 +724,6 @@ def teacher_query_score(request,classespk):
     context['students'] = students
     return render(request,'namelist.html',context)
 
-from django.db.models import Max,Avg
 @login_required(login_url="/teacher/")
 def student_score(request,studentpk):
     #所有该生成绩
@@ -809,8 +809,22 @@ def my_evalution(request):
     teacher = Teacher.objects.get(teacher = user)
     #得到当前学年学期
     semester = request.GET.get("semester",Semester.objects.get(is_execute = True).pk)
+    evalution_score = Evalution_score.objects.filter(semester_id = semester,teacher = teacher)
+    tevalution = Tevaluation.objects.all()
+    #得到wordcloud图片
     save_plt_image(teacher,semester)
+    evalution_score_list = {}
+    totalscore = 0
+    for t in tevalution:
+        aevalution_score = Evalution_score.objects.filter(semester_id = semester,teacher = teacher, \
+           evalution=t ).aggregate(Max('score'),Min('score'),Avg('score'))
+        evalution_score_list[t] = aevalution_score
+        totalscore += aevalution_score['score__avg']*t.weights
     context['image_path'] = "/static/wordcloud/cloud/"+teacher.teacher.username + "-" +str(semester)+".png"
     context['teacher'] = teacher
     context['semesterpk'] = semester
+    context['evalution_score'] = evalution_score
+    context['tevalution'] = tevalution
+    context['evalution_score_list'] = evalution_score_list
+    context['totalscore'] = round(totalscore,2)#保留2位小数
     return render(request,'teacher/my_evalution.html',context)

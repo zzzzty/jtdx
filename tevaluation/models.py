@@ -8,8 +8,9 @@ from django.contrib.auth.models import User
 class Tevaluation(models.Model):
     name = models.CharField('名称',max_length=20)
     content = models.CharField('简介',max_length=200)
+    weights = models.FloatField("权重",default=0)
     def __str__(self):
-        return self.name
+        return "测评项目：%s 权重：%s"%(self.name,self.weights)
 
 class Evalution_score(models.Model):
     evalution = models.ForeignKey(Tevaluation,on_delete=models.DO_NOTHING)
