@@ -25,6 +25,7 @@ urlpatterns = [
     path('major/',include('major.urls')),
     path('teacher/',include('teacher.urls')),
     path('student/',include('student.urls')),
+    path('auction/',include('auction.urls')),
     path('captcha',include('captcha.urls')),
     path('ckeditor',include('ckeditor_uploader.urls')),#富文本路径
 ]

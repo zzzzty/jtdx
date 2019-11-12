@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+     {{ product.name }} </br>
+     {{ product.photo}} </br>
+     <!-- {{ product.start_price}} -->
+    <img src="{{product.photo.url}}" width="400" height="400">
+    </br>
+    {% if price != 0 %}
+        {% for p in prices %}
+            {{p.belong}}--{{p.price}}--{{p.create_time}}
+</br>
+        {% empty %}
+        {% endfor %}
+    {% else %}
+        起拍50￥
+    {% endif %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="text" placeholder="购买人" name = "belong_">
+        <input type="text" placeholder="价格" name = "price_" value=10>
+        <input  type="submit" value="提交">
+    </form>
+{% endblock %}
