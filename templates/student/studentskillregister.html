@@ -13,7 +13,6 @@
 <div class="row">
     
     <div class="col-md-8 col-md-offset-2">
-        学生：{{ student }}
         学生专业：{{ student.classes.major }}
     <form action="" method="post">
         {% csrf_token %}
@@ -27,7 +26,7 @@
         <tr>
             <td>
         <!-- 公共基础类 -->
-        <select name="A" id="A" class="form-control">
+        <select name="A" id="A" class="form-control" onchange="testajax(this)">
                 <option value="无">--请选择--</option>
         {% for skillproject in skillprojectsA %}
                 <option value="{{ skillproject.pk}}">{{skillproject.name}}</option>
@@ -38,7 +37,7 @@
              </td>
              <td>
         <!--  专业基础类-->
-        <select name="B" id="C" class="form-control">
+        <select name="B" id="C" class="form-control" onchange="testajax(this)">
                 <option value="无">--请选择--</option>
         {% for skillproject in skillprojectsB %}
                 <option value="{{ skillproject.pk}}">{{skillproject.name}}</option>
@@ -49,7 +48,7 @@
             </td>
         <!-- 专业类 -->
             <td>
-        <select name="C" id="C" class="form-control">
+        <select name="C" id="C" class="form-control" onchange="testajax(this)">
                 <option value="无">--请选择--</option>
         {% for skillproject in skillprojectsC %}
                 <option value="{{ skillproject.pk}}">{{skillproject.name}}</option>
@@ -68,7 +67,12 @@
     
     </form>
     </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <p id="projectinfo" name="projectinfo">简介信息</p>
+        </div>
 
+    </div>
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
         <table class="table">
@@ -90,4 +94,21 @@
         </div>
     </div>
 </div>    
+<script type="text/javascript">
+    // 使用js的方法对教师进行筛选
+    function testajax(ths){
+        var belong = $(ths).val();
+        $.ajax({
+            type:'GET',
+            url:"{% url 'getskillprojectinfo' %}?skillpk=" + belong,
+            dataType:'json',
+            success:function(mydata){
+                console.log(mydata);
+                var html = mydata['mydata'];
+                var newid ='projectinfo';
+                $("#"+newid).html(html);
+            }
+        })
+    }
+</script>
 {% endblock %}

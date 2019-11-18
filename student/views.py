@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required,permission_required
 from tevaluation.models import Tevaluation,Evalution_score,Comment
 from tevaluation.forms import CommentForm
 from skill_register.models import SkillProject,SkillChoose
+from django.http import JsonResponse
 # Create your views here.
 def student_home(request):
     if request.method == 'GET':
@@ -207,8 +208,7 @@ def skillregister(request):
     student = Student.objects.get(student=user)
     semester = Semester.objects.get(is_execute = True)
     classes = student.classes
-    major = student.classes.major
-        
+    major = student.classes.major    
     if request.method=="POST":
         AS = ["A","B","C"]
         for A in AS:
@@ -228,3 +228,12 @@ def skillregister(request):
     else:
         mychooses = SkillChoose.objects.filter(student=student,semester=semester)
     return render(request,'student/studentskillregister.html',locals())
+
+
+def getskillprojectinfo(request):
+    skillprojectpk = request.GET.get('skillpk',"无")
+    if skillprojectpk != "无":
+        skillprojectinfo = SkillProject.objects.get(pk=skillprojectpk).context
+    else:
+        skillprojectinfo = "没有选择"
+    return  JsonResponse({"mydata":skillprojectinfo})

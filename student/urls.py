@@ -10,4 +10,5 @@ urlpatterns = [
     path('myteacher/',views.my_teacher_list,name="my_teacher"),
     path('insert_evaluation/',views.insert_evaluation,name="insert_evaluation"),
     path('skillregister/',views.skillregister,name="skillregister"),
+    path('getskillprojectinfo/',views.getskillprojectinfo,name="getskillprojectinfo"),
 ]
