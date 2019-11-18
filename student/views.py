@@ -233,7 +233,8 @@ def skillregister(request):
 def getskillprojectinfo(request):
     skillprojectpk = request.GET.get('skillpk',"无")
     if skillprojectpk != "无":
-        skillprojectinfo = SkillProject.objects.get(pk=skillprojectpk).context
+        project = SkillProject.objects.get(pk=skillprojectpk)
+        skillprojectinfo =project.context
     else:
         skillprojectinfo = "没有选择"
     return  JsonResponse({"mydata":skillprojectinfo})

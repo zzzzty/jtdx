@@ -2,24 +2,68 @@
 {% load staticfiles %}
 
 {% block content %}
-     {{ product.name }} </br>
-     {{ product.photo}} </br>
-     <!-- {{ product.start_price}} -->
-    <img src="{{product.photo.url}}" width="400" height="400">
-    </br>
-    {% if price != 0 %}
-        {% for p in prices %}
-            {{p.belong}}--{{p.price}}--{{p.create_time}}
-</br>
-        {% empty %}
-        {% endfor %}
-    {% else %}
-        起拍50￥
-    {% endif %}
-    <form action="" method="post">
-        {% csrf_token %}
-        <input type="text" placeholder="购买人" name = "belong_">
-        <input type="text" placeholder="价格" name = "price_" value=10>
-        <input  type="submit" value="提交">
-    </form>
+    <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+               <p>{{ product.name }}</p> 
+                <p>起拍价格：{{ product.start_price}}</p>
+            </div>
+    </div>
+
+
+    <div class="row">
+            <div class="col-md-4 col-md-offset-2">
+                <img src="{{product.photo.url}}" width="400" height="400">
+            </div>
+            <div class="col-md-4 col-md-offset-2">
+                <img src="{{product.photo_image.url}}" width="200" height="200">
+            </div>
+    </div>
+
+    <div class="row">
+            <div class="col-md-4 col-md-offset-2">
+                {{ message }}
+            </div>
+        </div>
+
+
+
+
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <form action="" method="post" class="form-inline">
+                {% csrf_token %}
+                        <input class="form-control" type="text" placeholder="购买人" name = "belong_" value="{{ belong_ }}">
+                        <input class="form-control" type="text" placeholder="价格" name = "price_" value=10>
+                        <input type="submit" class="btn btn-primary" value="卖卖卖">
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="row">
+
+    </div>
+        <div class="col-md-8 col-md-offset-2">
+            <table class="table">
+                <tr>
+                    <th>出价者</th>
+                    <th>价格</th>
+                    <th>时间</th>
+                </tr>
+                
+                    {% for p in prices %}
+                    <tr>
+                    <td>{{p.belong}}</td>
+                    <td>{{p.price}}</td> 
+                    <td>{{p.create_time}}</td>
+                    {% empty %}
+                    <td colspan="3">没有竞拍信息</td>
+                    </tr>
+                    {% endfor %}
+                
+            </table>
+        </div>
+
 {% endblock %}
