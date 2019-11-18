@@ -13,6 +13,7 @@ from teachingtask.models import TeachingTask,Semester
 from django.contrib.auth.decorators import login_required,permission_required
 from tevaluation.models import Tevaluation,Evalution_score,Comment
 from tevaluation.forms import CommentForm
+from skill_register.models import SkillProject,SkillChoose
 # Create your views here.
 def student_home(request):
     if request.method == 'GET':
@@ -198,3 +199,32 @@ def my_scores(request):
     scores = Score.objects.filter(student=student).order_by('-pk','task__semester')
     
     return render(request,'student/student_score_list.html',locals())
+
+
+@login_required(login_url="/student/")
+def skillregister(request):
+    user = request.user
+    student = Student.objects.get(student=user)
+    semester = Semester.objects.get(is_execute = True)
+    classes = student.classes
+    major = student.classes.major
+        
+    if request.method=="POST":
+        AS = ["A","B","C"]
+        for A in AS:
+            A = request.POST.get(A)
+            if A!="无" and not SkillChoose.objects. \
+                filter(student=student,skillproject__pk=A,semester=semester).exists():
+                newskillchoose = SkillChoose()
+                newskillchoose.student = student
+                newskillchoose.semester = semester
+                newskillchoose.skillproject = SkillProject.objects.get(pk=A)
+                newskillchoose.save()
+
+    if not SkillChoose.objects.filter(student=student,semester=semester).exists():
+        skillprojectsA = SkillProject.objects.filter(majors=major,skilltype="公共基础类")
+        skillprojectsB = SkillProject.objects.filter(majors=major,skilltype="专业基础类")
+        skillprojectsC = SkillProject.objects.filter(majors=major,skilltype="专业类")
+    else:
+        mychooses = SkillChoose.objects.filter(student=student,semester=semester)
+    return render(request,'student/studentskillregister.html',locals())

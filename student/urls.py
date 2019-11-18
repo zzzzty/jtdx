@@ -9,4 +9,5 @@ urlpatterns = [
     path('myscores/',views.my_scores,name="my_scores"),
     path('myteacher/',views.my_teacher_list,name="my_teacher"),
     path('insert_evaluation/',views.insert_evaluation,name="insert_evaluation"),
+    path('skillregister/',views.skillregister,name="skillregister"),
 ]

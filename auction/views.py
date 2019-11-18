@@ -10,7 +10,7 @@ def show(request,productpk):
     price = 0
     price = SellProduct.objects.filter(product_id = productpk).count()
     if price > 0:
-        prices = SellProduct.objects.filter(product_id = productpk).order_by('-create_time')[:3]
+        prices = SellProduct.objects.filter(product_id = productpk).order_by('-create_time')
     else:
         prices = 50
     content['price'] = price
