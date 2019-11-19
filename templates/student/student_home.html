@@ -6,14 +6,15 @@
     <!-- <a href="{% url 'logout' %}">logout</a> -->
     {% if not request.user.is_authenticated %}
     <div class="col-xs-3 col-xs-offset-4">
-        <div class="panel panel-default">
+            <form action="" method="post">
+        <div class="panel panel-default register-container">
                 <div class="panel-heading" >
                     <h3 class="panel-title" color="red">
                         学生登陆
                     </h3>
                 </div>
                 <div class="panel-body">
-                    <form action="" method="post">
+                    <div class="">
                     {% csrf_token %}
                     {% for field in teacherloginform %}
                     <label for="{{ field.id_for_label }}">{{ field.label }}</label>
@@ -21,12 +22,12 @@
                     <p class="text-danger">{{ field.errors.as_text }}</p>
                     {% endfor %}
                     <span class="pull-left text-danger">{{ teacherloginform.non_field_errors}}</span>
-                    <input type="submit" class = "btn btn-primary btn-sm pull-right" value="goo">
-                    <a href="{% url 'teacher_home'%}" class="btn btn-primary btn-sm pull-left">教师入口</a>
-                    </form>
+                    <input type="submit" class = "btn btn-primary btn-sm pull-right" value="进入系统">
+                    <!-- <a href="{% url 'teacher_home'%}" class="btn btn-primary btn-sm pull-left">教师入口</a> -->
+                </div>
                 </div>
             </div>
-    
+        </form>
         {% else %}
             <p>欢迎，{{ request.user.username }} {{ u }}</p>
             <a href="{% url 'logout' %}">登出</a>

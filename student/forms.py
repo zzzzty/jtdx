@@ -7,7 +7,7 @@ from .models import Student
 
 class StudentLoginForm(forms.Form):
     username = forms.CharField(label='姓名' \
-        ,required=True,widget=forms.TextInput(attrs={'class':'form-control'}))
+        ,required=True,widget=forms.TextInput(attrs={'class':'form-control','width':'100'}))
     student_num = forms.CharField(label='学号' \
         ,required=True,widget=forms.TextInput(attrs={'class':'form-control'}))
     password = forms.CharField(label='密码' \
