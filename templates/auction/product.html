@@ -10,22 +10,12 @@
     </div>
 
 
-    <div class="row">
-            <div class="col-md-4 col-md-offset-2">
-                <img src="{{product.photo.url}}" width="400" height="400">
-            </div>
-            <div class="col-md-4 col-md-offset-2">
-                <img src="{{product.photo_image.url}}" width="200" height="200">
-            </div>
-    </div>
 
     <div class="row">
             <div class="col-md-4 col-md-offset-2">
                 {{ message }}
             </div>
         </div>
-
-
 
 
 
@@ -65,5 +55,12 @@
                 
             </table>
         </div>
-
+        <div class="row">
+                <div class="col-md-4 col-md-offset-2">
+                    <img src="{{product.photo.url}}" width="400" height="400">
+                </div>
+                <div class="col-md-4 col-md-offset-2">
+                    <img src="{{product.photo_image.url}}" width="200" height="200">
+                </div>
+        </div>
 {% endblock %}

@@ -78,12 +78,14 @@
         <table class="table">
             <tr>
                 <th>项目(以报名)</th>
-                <th>项目简介</th>
+                <th>比赛地点</th>
+                <th>比赛时间</th>
             </tr>
         {% for choose in mychooses %}
             <tr>
                 <td>{{ choose.skillproject }}</td>
-                <td>{{ choose.skillproject.context }}</td>
+                <td>{{ choose.skillproject.place }}</td>
+                <td>{{ choose.skillproject.game_time}}</td>
             </tr>
         {% empty %}
         <tr>
