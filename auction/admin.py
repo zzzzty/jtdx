@@ -4,7 +4,7 @@ from .models import Product,SellProduct
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name','create_time']
+    list_display = ['pk','name','create_time']
     #search_fields = ['classes__name','teacher__teacher__username','classes__major__grade']
     #ordering = ['-semester','classes__major__grade']
 

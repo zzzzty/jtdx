@@ -53,3 +53,24 @@ def show(request,productpk):
     prices = SellProduct.objects.filter(product_id = productpk).order_by('-create_time')
     content['prices'] = prices
     return render(request,"auction/product.html",content) 
+
+
+def bigshow(request,productpk):
+    content = {}
+    message = ""
+    product = get_object_or_404(Product,pk=productpk)
+    #price = get_object_or_404(SellProduct,product_id=productpk)
+    price = SellProduct.objects.filter(product_id = productpk).exists()
+    if price:
+        price = SellProduct.objects.filter(product_id = productpk).order_by('-create_time')[0]
+        prices = SellProduct.objects.filter(product_id = productpk).order_by('-create_time')
+    else:
+        price = product.start_price
+        prices = []
+
+    content['price'] = price
+    content['prices'] = prices
+    content['product'] = product
+    prices = SellProduct.objects.filter(product_id = productpk).order_by('-create_time')
+    content['prices'] = prices
+    return render(request,"auction/bigproduct.html",content) 
