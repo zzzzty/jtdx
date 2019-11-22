@@ -9,3 +9,4 @@ class SkillProjectAdmin(admin.ModelAdmin):
 @admin.register(SkillChoose)
 class SkillChooseAdmin(admin.ModelAdmin):
     list_display = ('skillproject','student','semester')
+    search_fields = ('student__classes__name','skillproject__name')
