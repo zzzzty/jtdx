@@ -7,11 +7,17 @@ import xlrd
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password,check_password
 
-table = xlrd.open_workbook('/home/liu/project/django_web/jtdx/chengji.xls')
+#table = xlrd.open_workbook('/home/liu/project/django_web/jtdx/chengji.xls')
+
+basename =os.path.dirname(os.path.abspath(__file__)) 
+dirtable = os.path.join(basename,"chengji.xlsx")
+table = xlrd.open_workbook(dirtable)
+
 data = table.sheets()[0]
 nrows = data.nrows
 ncols = data.ncols
 
+print(nrows,ncols)
 
 def get_value(data,row_index,col_index):
     the_value = data.cell(row_index,col_index).ctype
@@ -25,7 +31,7 @@ def get_value(data,row_index,col_index):
 
 
 from teacher.models import Teacher
-theuser = Teacher.objects.all()[0]
+theuser = Teacher.objects.filter(teacher__username='liu')[0]
 
 for i in range(1,nrows):
     #学生姓名
@@ -187,6 +193,7 @@ for i in range(1,nrows):
         newscore.save()
         score = newscore
         #print("savesocre",str(i))
+
 '''
 #补考成绩录入
     if len(str(bukaoscore)) > 0 and score.score < 60:

@@ -171,10 +171,6 @@ def insert_evaluation(request):
             context["semester"] = semester
             return render(request,'student/rateteacher.html',context)
 
-        
-
-
-
 
 @login_required(login_url="/student/")
 def my_course(request):
@@ -239,3 +235,4 @@ def getskillprojectinfo(request):
     else:
         skillprojectinfo = "没有选择"
     return  JsonResponse({"mydata":skillprojectinfo})
+
