@@ -78,7 +78,8 @@ for i in range(1,nrows):
     
     from major.models import Major
     try:
-        major = Major.objects.get(name = major)
+        #如果出现重复信息如何
+        major = Major.objects.get(name = major,grade=grade)
     except:
         newmajor = Major()
         newmajor.name = major

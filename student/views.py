@@ -206,19 +206,19 @@ def skillregister(request):
     classes = student.classes
     major = student.classes.major
 
-    if request.method=="POST":
-        SkillChoose.objects. \
-                filter(student=student,semester=semester).delete()
-        AS = ["A","B","C"]
-        for A in AS:
-            A = request.POST.get(A)
-            if A!="无" and not SkillChoose.objects. \
-                filter(student=student,skillproject__pk=A,semester=semester).exists():
-                newskillchoose = SkillChoose()
-                newskillchoose.student = student
-                newskillchoose.semester = semester
-                newskillchoose.skillproject = SkillProject.objects.get(pk=A)
-                newskillchoose.save()
+    # if request.method=="POST":
+    #     SkillChoose.objects. \
+    #             filter(student=student,semester=semester).delete()
+    #     AS = ["A","B","C"]
+    #     for A in AS:
+    #         A = request.POST.get(A)
+    #         if A!="无" and not SkillChoose.objects. \
+    #             filter(student=student,skillproject__pk=A,semester=semester).exists():
+    #             newskillchoose = SkillChoose()
+    #             newskillchoose.student = student
+    #             newskillchoose.semester = semester
+    #             newskillchoose.skillproject = SkillProject.objects.get(pk=A)
+    #             newskillchoose.save()
 
     skillprojectsA = SkillProject.objects.filter(majors=major,skilltype="公共基础类")
     skillprojectsB = SkillProject.objects.filter(majors=major,skilltype="专业基础类")
