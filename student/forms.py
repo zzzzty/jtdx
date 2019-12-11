@@ -7,11 +7,11 @@ from .models import Student
 
 class StudentLoginForm(forms.Form):
     username = forms.CharField(label='学生姓名',required=True,widget=forms. \
-        TextInput(attrs={'class':'required','width':'100','placeholder':'学生姓名'}))
+        TextInput(attrs={'class':'form-control','width':'100','placeholder':'学生姓名'}))
     student_num = forms.CharField(label='学号' \
-        ,required=True,widget=forms.TextInput(attrs={'class':'required','placeholder':'学生学号'}))
+        ,required=True,widget=forms.TextInput(attrs={'class':'form-control','placeholder':'学生学号'}))
     password = forms.CharField(label='密码' \
-        ,widget=forms.PasswordInput(attrs={'class':'required','placeholder':'密码'}))
+        ,widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'密码'}))
     def clean(self):
         username = self.cleaned_data['username']
         password = self.cleaned_data['password']

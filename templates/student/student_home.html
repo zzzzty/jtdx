@@ -1,5 +1,4 @@
 {% extends 'student/student_base.html' %}
-
 {% block content %}
 {{ message }}
 
@@ -7,10 +6,10 @@
     {% if not request.user.is_authenticated %}
     <div class="col-xs-3 col-xs-offset-4">
             <form action="" method="post">
-        <div class="panel">
+        <div class="panel panel-default">
                 <div class="panel-heading" >
                     <h3 class="panel-title" color="red">
-                        <!-- 学生登陆 -->
+                        学生登陆
                     </h3>
                 </div>
                 <div class="panel-body">
