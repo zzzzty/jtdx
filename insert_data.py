@@ -68,7 +68,7 @@ for i in range(1,nrows):
     from grade.models import Grade
     try:
         grade = Grade.objects.get(name = grade)
-        #print(grade)
+        print(grade)
     except:
         newgrade = Grade()
         newgrade.name = grade
