@@ -34,6 +34,7 @@ from teacher.models import Teacher
 theuser = Teacher.objects.filter(teacher__username='liu')[0]
 
 for i in range(1,nrows):
+    print("第%s行的数据正在导入"%str(i))
     #学生姓名
     student = data.cell(i,1).value
     studentnickname = data.cell(i,1).value
